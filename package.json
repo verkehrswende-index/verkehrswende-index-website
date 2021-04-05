@@ -1,0 +1,32 @@
+{
+  "private": true,
+  "name": "verkehrswindex-website",
+  "version": "0.0.0",
+  "license": "MIT",
+  "scripts": {
+    "build": "parcel ${PARCEL_BUILD_COMMAND:-build} src/index.html",
+    "dev": "PARCEL_BUILD_COMMAND=serve npm run build",
+    "lint": "eslint src",
+    "test": "jest"
+  },
+  "dependencies": {
+    "bootstrap": "^4.6.0",
+    "parcel": "^2.0.0-beta.1",
+    "react": "^17.0.2",
+    "react-bootstrap": "^1.5.2",
+    "react-dom": "^17.0.2",
+    "react-router": "^5.2.0",
+    "react-router-dom": "^5.2.0",
+    "serve-static": "^1.14.1"
+  },
+  "jest": {
+    "preset": "jest-preset-preact",
+    "setupFiles": [
+      "<rootDir>/tests/__mocks__/browserMocks.js",
+      "<rootDir>/tests/__mocks__/setupTests.js"
+    ]
+  },
+  "devDependencies": {
+    "sass": "^1.32.8"
+  }
+}

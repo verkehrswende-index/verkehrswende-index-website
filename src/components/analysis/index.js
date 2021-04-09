@@ -1,58 +1,117 @@
-import React, { useEffect, useState } from 'react';
+import React, { button, useEffect, useState } from 'react';
+import { Alert, Button, Row, Col } from 'react-bootstrap';
+import Loading from '../loading';
+import Score from './score.js';
+import Value from './value.js';
+import './style.scss';
 
 const registeredAnalysis = {
   'radinfrastruktur': {
     'title': 'Radinfrastruktur',
+    'description': `
+Wie viele Radwege und Radspuren gibt es
+im Verhältnis zu allen Wegen?
+    `,
+    'values': {
+      'good': {
+        'title': 'Gut',
+        'unit': 'm',
+        'description': 'Komfortable, schnelle, sichere Rad-Infrastruktur',
+      },
+      'acceptable': {
+        'title': 'Akzeptabel',
+        'unit': 'm',
+        'description': 'Minimal/Akzeptable Rad-Infrastruktur sowie Wege mit Tempo 30',
+      },
+      'car': {
+        'title': 'Schlecht',
+        'unit': 'm',
+        'description': 'Schlechte oder nicht vorhandene Rad-Infrastruktur',
+      },
+    },
   },
 };
 
-const Analysis = ( { area, analysis } ) => {
-  console.log( area, analysis );
+const Analysis = ( { area, analysis, store } ) => {
   const config = registeredAnalysis['radinfrastruktur'];
 
 
   const [data, setData] = useState(null);
+  const [mapShown, setMapShown] = useState(false);
+  const [mapFinished, setMapFinished] = useState(false);
+
+  const loadFeatures = () => {
+    setMapShown(true);
+    var map = new Map('map');
+		fetch(
+      store.config.dataPath + `areas/${encodeURIComponent(area)}/analysis/bike_infrastructure/features.json`,
+		)
+      .then( ( response ) => response.json() )
+      .then( ( json ) => {  setMapFinished(true); map.view(json);  } );
+  };
 
 	useEffect(() => {
-    var map = new Map('map');
-
 		fetch(
-			`http://localhost:3000/areas/${encodeURIComponent(area)}/analysis/bike_infrastructure/features.json`,
+      store.config.dataPath + `areas/${encodeURIComponent(area)}/analysis/bike_infrastructure/results.json`,
 		)
       .then( ( response ) => response.json() )
-      .then( ( json ) => {  map.view(json);  } );
-
-		fetch(
-			`http://localhost:3000/areas/${encodeURIComponent(area)}/analysis/bike_infrastructure/results.json`,
-		)
-      .then( ( response ) => response.json() )
-      .then( ( json ) => {  console.log('gotit', json); setData(json);  } );
+      .then( ( json ) => {  setData(json);  } );
 
 	}, []);
 
-  var items = data !== null ? Object.keys(data).map( key => {
-    console.log(key);
-    return <p>{key}: {data[key]}</p>
-  }) : [];
-
-  console.log(data);
-  console.log(items);
-
-  return (
+  return  (
     <>
-      <h1>{ config.title }</h1>
+      <h2>{ config.title }</h2>
+      <p>{ config.description }</p>
+      <Alert variant='warning'>
+        Diese Analyse ist zur Zeit noch sehr experimentell und daher mit Vorsicht zu genießen!
+      </Alert>
+      {
+      data !== null ? (
+        <>
+      <Row>
+        <Col xs={1}>
+          <Score score={data.score} />
+        </Col>
+        <Col>
+          <ul className="analysis-values">
+            {
+            Object.keys(config.values).map( key => (
+            <li key={key}>
+              <Value config={config.values[key]} value={data[key]}/>
+            </li>
+            ) )
+            }
+          </ul>
+        </Col>
+      </Row>
+      { ! mapShown &&
       <p>
-        Items:
-      { items  }
+        <Button onClick={loadFeatures} variant="info">Zeige Karte</Button>
+                       &nbsp;
+        (je nach Größe der Stadt werden viele Daten geladen. Kann auf älteren Computern oder im Mobilfunk Probleme bereiten)
       </p>
-      <div id="map"></div>
+      }
+        </>
+      ) : <p>Daten werden geladen...</p>
+      }
+
+    <div id="map">
+      { mapShown && ! mapFinished && <Loading/> }
+    </div>
     </>
   );
 };
 
 class Map {
   constructor(mapid) {
-    this.map = new L.Map(mapid);
+
+    var options = {
+      minZoom: 10,
+      maxZoom: 24,
+    };
+
+    this.map = new L.Map(mapid,options);
 
     var osmUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
     var osmAttrib = 'Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors';
@@ -79,46 +138,145 @@ class Map {
       mouseover: () => layer.setStyle(this.getFeatureStyle(feature,true)),
       mouseout: () => layer.setStyle(this.getFeatureStyle(feature)),
     });
+  }
 
-    if (feature.properties) {
-      var content = '';
-      if (feature.properties.name) {
-        content += '<h2>' + feature.properties.name + '</h2><br>';
-      }
-      content += '<strong>Werte:</strong><br>';
-      for(var property in feature.properties) {
-        if (property === 'id') {
-          var osmLink = '<a target="_blank" href="https://www.openstreetmap.org/'
-            + feature.properties[property]
-            + '">View in Open Street Map</a>';
-        } else {
-          content += '<i>' + property + ':</i> ' + feature.properties[property] + "<br>";
-        }
-      }
-      content += '<br>' + osmLink;
-
-      layer.bindPopup(content);
+  getPopupContent(feature) {
+    var content = '';
+    if (feature.properties.name) {
+      content += '<h2>' + feature.properties.name + '</h2><br>';
     }
+    content += '<strong>Werte:</strong><br>';
+    for(var property in feature.properties) {
+      if (property === 'id') {
+        var osmLink = '<a target="_blank" href="https://www.openstreetmap.org/'
+                    + feature.properties[property]
+                    + '">View in Open Street Map</a>';
+      } else {
+        content += '<i>' + property + ':</i> ' + feature.properties[property] + "<br>";
+      }
+    }
+    content += '<br>' + osmLink;
+    return content;
   }
 
   view(geoJSON) {
+
+    L.DomEvent._fakeStop = L.DomEvent.fakeStop;
+
     var bounds = L.latLngBounds([]);
-    L.geoJSON(geoJSON.features, {
-      onEachFeature: this.onEachFeature.bind(this, bounds),
-      style: this.getFeatureStyle.bind(this),
-      pointToLayer: function (feature, latlng) {
-        return L.circleMarker(latlng, {
-          radius: 8,
-          fillColor: "#ff7800",
-          color: "#000",
-          weight: 1,
-          opacity: 1,
-          fillOpacity: 0.8
-        });
-      }
-    }).addTo(this.map);
-    this.map.fitBounds(bounds);
+    /* L.geoJSON(geoJSON.features, {
+     *   onEachFeature: this.onEachFeature.bind(this, bounds),
+     *   style: this.getFeatureStyle.bind(this),
+     * }).addTo(this.map); */
+
+		var highlight;
+		var clearHighlight = function() {
+			if (highlight) {
+				vectorGrid.resetFeatureStyle(highlight);
+			}
+			highlight = null;
+		};
+
+    var self = this;
+
+    var vectorGrid = L.vectorGrid.slicer(geoJSON, {
+      rendererFactory: L.canvas.tile,
+      vectorTileLayerStyles: {
+        sliced: (properties, zoom) => this.getFeatureStyle({ properties: properties}),
+      },
+      interactive: true,
+	    getFeatureId: function(f) {
+				return f.properties.id;
+			},
+      maxZoom: 24,  // max zoom to preserve detail on; can't be higher than 24
+	    tolerance: 10, // simplification tolerance (higher means simpler)
+	    extent: 4096, // tile extent (both width and height)
+	    buffer: 64,   // tile buffer on each side
+	    debug: 0,     // logging level (0 to disable, 1 or 2)
+	    lineMetrics: false, // whether to enable line metrics tracking for LineString/MultiLineString features
+	    promoteId: null,    // name of a feature property to promote to feature.id. Cannot be used with `generateId`
+	    generateId: false,  // whether to generate feature ids. Cannot be used with `promoteId`
+	    indexMaxZoom: 10,       // max zoom in the initial tile index
+	    indexMaxPoints: 100000 // max number of points per tile in the index
+    })
+     .on('click', function(e) {
+       var properties = e.layer.properties;
+       L.popup()
+        .setLatLng(e.latlng)
+        .setContent(self.getPopupContent({properties: properties}))
+        .openOn(self.map);
+     })
+                      .on('mouseover', function(e) {
+                        var properties = e.layer.properties;
+                        clearHighlight();
+                        highlight = properties.id;
+
+                        var style = {
+                          opacity: 1,
+                          weight: 3,
+                        };
+
+                        vectorGrid.setFeatureStyle(properties.id, style);
+                      })
+                      .on('mouseout', function(e) {
+                        clearHighlight();
+                      })
+                      .addTo(this.map);
+
+		/* this.map.on('click', clearHighlight); */
+
+    var bbox = getBoundingBox(geoJSON);
+    console.log(bbox);
+    this.map.fitBounds(
+      [
+        [bbox.yMin, bbox.xMin],
+        [bbox.yMax, bbox.xMax]
+      ]
+    );
   };
+}
+function getBoundingBox(data) {
+  var bounds = {}, coordinates, point, latitude, longitude;
+
+  // Loop through each "feature"
+  for (var i = 0; i < data.features.length; i++) {
+    coordinates = data.features[i].geometry.coordinates;
+
+    if(coordinates.length === 1){
+      // It's only a single Polygon
+      // For each individual coordinate in this feature's coordinates...
+      for (var j = 0; j < coordinates[0].length; j++) {
+        longitude = coordinates[0][j][0];
+        latitude  = coordinates[0][j][1];
+
+        // Update the bounds recursively by comparing the current xMin/xMax and yMin/yMax with the current coordinate
+        bounds.xMin = bounds.xMin < longitude ? bounds.xMin : longitude;
+        bounds.xMax = bounds.xMax > longitude ? bounds.xMax : longitude;
+        bounds.yMin = bounds.yMin < latitude ? bounds.yMin : latitude;
+        bounds.yMax = bounds.yMax > latitude ? bounds.yMax : latitude;
+      }
+    } else {
+      // It's a MultiPolygon
+      // Loop through each coordinate set
+      for (var j = 0; j < coordinates.length; j++) {
+        // For each individual coordinate in this coordinate set...
+        for (var k = 0; k < coordinates[j][0].length; k++) {
+          longitude = coordinates[j][0][k][0];
+          latitude  = coordinates[j][0][k][1];
+
+          // Update the bounds recursively by comparing the current xMin/xMax and yMin/yMax with the current coordinate
+          bounds.xMin = bounds.xMin < longitude ? bounds.xMin : longitude;
+          bounds.xMax = bounds.xMax > longitude ? bounds.xMax : longitude;
+          bounds.yMin = bounds.yMin < latitude ? bounds.yMin : latitude;
+          bounds.yMax = bounds.yMax > latitude ? bounds.yMax : latitude;
+        }
+      }
+    }
+  }
+
+  // Returns an object that contains the bounds of this GeoJSON data.
+  // The keys describe a box formed by the northwest (xMin, yMin) and southeast (xMax, yMax) coordinates.
+  return bounds;
 }
 
 export default Analysis;

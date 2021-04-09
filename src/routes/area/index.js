@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
+import {Helmet} from 'react-helmet';
 import { useParams } from 'react-router-dom';
 
 import Analysis from '../../components/analysis';
+import Loading from '../../components/loading';
 
 // Note: `user` comes from the URL, courtesy of our router
-const Area = () => {
+const Area = ({store}) => {
   let { area, analysis } = useParams();
 
 	// const [time, setTime] = useState(Date.now());
@@ -13,29 +15,28 @@ const Area = () => {
   const [data, setData] = useState(null);
 
 	useEffect(() => {
-		const opts = {
-			headers: {
-				// 'X-WP-Nonce': wpApiSettings.nonce,
-			},
-			method: 'GET',
-		};
 		fetch(
-			`http://localhost:3000/areas/${encodeURIComponent(area)}/config.json`,
-			opts
+      store.config.dataPath + `areas/${encodeURIComponent(area)}/config.json`
 		)
       .then( ( response ) => response.json() )
       .then( ( json ) => { setData(json);  } );
 	}, []);
 
-	return data ? (
-		<div className={style.profile}>
+
+  const helmet = (
+    <Helmet>
+      <title>{ data ? data.name : 'Gebiet' }</title>
+    </Helmet>
+  );
+
+	return [ helmet, ( data ? (
+    <div>
       <h1>{ data.name }</h1>
-			<p>Analysen für { data.name }.</p>
-      { ( analysis && <Analysis id={analysis} area={area} /> ) }
-			<p>
-			</p>
-		</div>
-  ) : <p>Loading</p>;
+      { ( analysis && <Analysis id={analysis} area={area} store={store} /> ) }
+      <p>
+      </p>
+    </div>
+  ) : <Loading/> ) ];
 }
 
 export default Area;

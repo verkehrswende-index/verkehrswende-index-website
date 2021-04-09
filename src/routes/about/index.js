@@ -1,7 +1,11 @@
 import React from 'react';
+import {Helmet} from 'react-helmet';
 
 const About = () => (
   <>
+    <Helmet>
+      <title>Über das Projekt</title>
+    </Helmet>
 
     <p>
       Der private Autoverkehr hat einen sehr großen Anteil an <strong>klimaschädlichen

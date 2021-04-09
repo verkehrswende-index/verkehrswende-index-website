@@ -1,0 +1,17 @@
+.analysis-values {
+  list-style-type: none;
+  padding: 0;
+}
+
+.analysis-score {
+  .CircularProgressbar-path {
+    stroke: red;
+  }
+}
+
+#map .loading {
+  position: relative;
+  top: 20%;
+  left: 45%;
+  z-index: 1000000;
+}

@@ -1,7 +1,11 @@
 import React from 'react';
+import {Helmet} from 'react-helmet';
 
 const Contact = () => (
   <>
+    <Helmet>
+      <title>Kontakt</title>
+    </Helmet>
     <h1>Kontakt</h1>
 
     <p>

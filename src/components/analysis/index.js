@@ -27,6 +27,7 @@ im Verhältnis zu allen Wegen?
         'title': 'Schlecht',
         'unit': 'm',
         'description': 'Schlechte oder nicht vorhandene Rad-Infrastruktur',
+        'lowerIsBetter': true,
       },
     },
   },
@@ -36,7 +37,8 @@ const Analysis = ( { area, analysis, store } ) => {
   const config = registeredAnalysis['radinfrastruktur'];
 
 
-  const [data, setData] = useState(null);
+  const [results, setResults] = useState(null);
+  const [results1Y, setResults1Y] = useState(null);
   const [mapShown, setMapShown] = useState(false);
   const [mapFinished, setMapFinished] = useState(false);
 
@@ -55,9 +57,15 @@ const Analysis = ( { area, analysis, store } ) => {
       store.config.dataPath + `areas/${encodeURIComponent(area)}/analysis/bike_infrastructure/results.json`,
 		)
       .then( ( response ) => response.json() )
-      .then( ( json ) => {  setData(json);  } );
+      .then( ( json ) => {  setResults( json ); } );
 
-	}, []);
+		fetch(
+      store.config.dataPath + `areas/${encodeURIComponent(area)}/analysis/bike_infrastructure/results.1y.json`,
+		)
+      .then( ( response ) => response.json() )
+      .then( ( json ) => {  setResults1Y( json ); } );
+
+  }, []);
 
   return  (
     <>
@@ -67,18 +75,18 @@ const Analysis = ( { area, analysis, store } ) => {
         Diese Analyse ist zur Zeit noch sehr experimentell und daher mit Vorsicht zu genießen!
       </Alert>
       {
-      data !== null ? (
+      results !== null && results1Y !== null ? (
         <>
-      <Row>
-        <Col xs={1}>
-          <Score score={data.score} />
+        <Row className="my-5 align-items-center">
+        <Col xs={4} sm={3} lg={2}>
+          <Score score={results.score} oldScore={results1Y.score}/>
         </Col>
         <Col>
           <ul className="analysis-values">
             {
             Object.keys(config.values).map( key => (
             <li key={key}>
-              <Value config={config.values[key]} value={data[key]}/>
+              <Value config={config.values[key]} value={results[key]} oldValue={results1Y[key]}/>
             </li>
             ) )
             }

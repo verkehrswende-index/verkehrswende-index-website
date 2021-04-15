@@ -15,3 +15,17 @@
   left: 45%;
   z-index: 1000000;
 }
+
+.value__relative--increase,
+.value__relative--decrease.value--lower-is-better {
+  color: rgb(60, 118, 61);
+}
+
+.value__relative--constant {
+  color: rgb(138, 109, 59);
+}
+
+.value__relative--decrease,
+.value__relative--increase.value--lower-is-better {
+  color: rgb(169, 68, 66);
+}

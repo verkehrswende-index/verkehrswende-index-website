@@ -7,7 +7,8 @@
     "build": "parcel ${PARCEL_BUILD_COMMAND:-build} src/index.html",
     "dev": "PARCEL_BUILD_COMMAND=serve npm run build",
     "lint": "eslint src",
-    "test": "jest"
+    "test": "jest",
+    "prettify": "prettier --write src"
   },
   "dependencies": {
     "bootstrap": "^4.6.0",

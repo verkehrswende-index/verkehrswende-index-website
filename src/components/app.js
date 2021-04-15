@@ -1,32 +1,30 @@
 // import { Router } from 'react-router-dom';
-import React from 'react';
-import {Helmet} from "react-helmet";
-import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom';
+import React from "react";
+import { Helmet } from "react-helmet";
+import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom";
 
-import { Footer, Container, Row, Col } from 'react-bootstrap';
+import { Footer, Container, Row, Col } from "react-bootstrap";
 
-import Header from './header';
+import Header from "./header";
 
 // Code-splitting is automated for `routes` directory
-import Home from '../routes/home';
-import Index from '../routes/index';
-import About from '../routes/about';
-import Area from '../routes/area';
-import Contact from '../routes/contact';
+import Home from "../routes/home";
+import Index from "../routes/index";
+import About from "../routes/about";
+import Area from "../routes/area";
+import Contact from "../routes/contact";
 
 var store = {
   config: {
-    'dataPath': '/data/',
-    /* 'dataPath': 'http://localhost:3000/', */
+    /* 'dataPath': '/data/', */
+    dataPath: "http://localhost:3000/",
   },
-}
+};
 
 const App = () => (
   <div id="app">
     <Router>
-      <Helmet
-        titleTemplate="%s | Verkehrswende-Index"
-      >
+      <Helmet titleTemplate="%s | Verkehrswende-Index">
         <title></title>
       </Helmet>
       <Header />
@@ -39,7 +37,9 @@ const App = () => (
                 <Index store={store} />
               </Route>
               <Route exact path="/ueber" component={About} />
-              <Route path={["/gebiete/:area/analysen/:analysis", "/gebiete/:area"]}>
+              <Route
+                path={["/gebiete/:area/analysen/:analysis", "/gebiete/:area"]}
+              >
                 <Area store={store} />
               </Route>
               <Route exact path="/kontakt" component={Contact} />
@@ -59,4 +59,3 @@ const App = () => (
 );
 
 export default App;
-

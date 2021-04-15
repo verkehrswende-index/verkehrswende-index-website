@@ -1,5 +1,5 @@
-import React from 'react';
-import {Helmet} from 'react-helmet';
+import React from "react";
+import { Helmet } from "react-helmet";
 
 const About = () => (
   <>
@@ -8,19 +8,20 @@ const About = () => (
     </Helmet>
 
     <p>
-      Der private Autoverkehr hat einen sehr großen Anteil an <strong>klimaschädlichen
-      Emissionen</strong>. Besonders in Städten mindert er durch <strong>Abgase,
-      Lärm und Platzbedarf</strong> die Lebensqualität der Bürger*innen. Die Förderung von alternativen
-      Mobilitätskonzepten ist demnach ein wichtiger Schritt hin zu einer
-      klimaschonenderen Gesellschaft und lebenswerteren Gemeinden.
+      Der private Autoverkehr hat einen sehr großen Anteil an{" "}
+      <strong>klimaschädlichen Emissionen</strong>. Besonders in Städten mindert
+      er durch <strong>Abgase, Lärm und Platzbedarf</strong> die Lebensqualität
+      der Bürger*innen. Die Förderung von alternativen Mobilitätskonzepten ist
+      demnach ein wichtiger Schritt hin zu einer klimaschonenderen Gesellschaft
+      und lebenswerteren Gemeinden.
     </p>
 
     <p>
       Aktuell gibt es allerdings viele Herausforderungen. Das ÖPNV-Angebot ist
-      unzureichend, die Fahrrad-Infrastruktur mangelhaft und es wurde und wird in Teilen
-      der Politik und Stadtplanung dem PKW-Verkehr noch eine zu hohe Priorität
-      eingeräumt, auch wenn dank eines gewandelten Bewusstseins in der Gesellschaft
-      ein positiver Trend zu erkennen ist.
+      unzureichend, die Fahrrad-Infrastruktur mangelhaft und es wurde und wird
+      in Teilen der Politik und Stadtplanung dem PKW-Verkehr noch eine zu hohe
+      Priorität eingeräumt, auch wenn dank eines gewandelten Bewusstseins in der
+      Gesellschaft ein positiver Trend zu erkennen ist.
     </p>
 
     <p>
@@ -37,8 +38,8 @@ const About = () => (
 
     <p>
       Offene Daten, insbesondere Daten aus dem Open-Street-Map-Projekt oder auch
-      gesammelte Feinstaub-Werte, werden analysiert, um verschiedene
-      für die Verkehrswende relevante Faktoren und Rankings zu berechnen.
+      gesammelte Feinstaub-Werte, werden analysiert, um verschiedene für die
+      Verkehrswende relevante Faktoren und Rankings zu berechnen.
     </p>
   </>
 );

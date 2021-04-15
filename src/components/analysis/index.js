@@ -1,41 +1,41 @@
-import React, { button, useEffect, useState } from 'react';
-import { Alert, Button, Row, Col } from 'react-bootstrap';
-import Loading from '../loading';
-import Score from './score.js';
-import Value from './value.js';
-import './style.scss';
+import React, { button, useEffect, useState } from "react";
+import { Alert, Button, Row, Col } from "react-bootstrap";
+import Loading from "../loading";
+import Score from "./score.js";
+import Value from "./value.js";
+import "./style.scss";
 
 const registeredAnalysis = {
-  'radinfrastruktur': {
-    'title': 'Radinfrastruktur',
-    'description': `
+  radinfrastruktur: {
+    title: "Radinfrastruktur",
+    description: `
 Wie viele Radwege und Radspuren gibt es
 im Verhältnis zu allen Wegen?
     `,
-    'values': {
-      'good': {
-        'title': 'Gut',
-        'unit': 'm',
-        'description': 'Komfortable, schnelle, sichere Rad-Infrastruktur',
+    values: {
+      good: {
+        title: "Gut",
+        unit: "m",
+        description: "Komfortable, schnelle, sichere Rad-Infrastruktur",
       },
-      'acceptable': {
-        'title': 'Akzeptabel',
-        'unit': 'm',
-        'description': 'Minimal/Akzeptable Rad-Infrastruktur sowie Wege mit Tempo 30',
+      acceptable: {
+        title: "Akzeptabel",
+        unit: "m",
+        description:
+          "Minimal/Akzeptable Rad-Infrastruktur sowie Wege mit Tempo 30",
       },
-      'car': {
-        'title': 'Schlecht',
-        'unit': 'm',
-        'description': 'Schlechte oder nicht vorhandene Rad-Infrastruktur',
-        'lowerIsBetter': true,
+      car: {
+        title: "Schlecht",
+        unit: "m",
+        description: "Schlechte oder nicht vorhandene Rad-Infrastruktur",
+        lowerIsBetter: true,
       },
     },
   },
 };
 
-const Analysis = ( { area, analysis, store } ) => {
-  const config = registeredAnalysis['radinfrastruktur'];
-
+const Analysis = ({ area, analysis, store }) => {
+  const config = registeredAnalysis["radinfrastruktur"];
 
   const [results, setResults] = useState(null);
   const [results1Y, setResults1Y] = useState(null);
@@ -44,97 +44,128 @@ const Analysis = ( { area, analysis, store } ) => {
 
   const loadFeatures = () => {
     setMapShown(true);
-    var map = new Map('map');
-		fetch(
-      store.config.dataPath + `areas/${encodeURIComponent(area)}/analysis/bike_infrastructure/features.json`,
-		)
-      .then( ( response ) => response.json() )
-      .then( ( json ) => {  setMapFinished(true); map.view(json);  } );
+    var map = new Map("map");
+    fetch(
+      store.config.dataPath +
+        `areas/${encodeURIComponent(
+          area
+        )}/analysis/bike_infrastructure/features.json`
+    )
+      .then((response) => response.json())
+      .then((json) => {
+        setMapFinished(true);
+        map.view(json);
+      });
   };
 
-	useEffect(() => {
-		fetch(
-      store.config.dataPath + `areas/${encodeURIComponent(area)}/analysis/bike_infrastructure/results.json`,
-		)
-      .then( ( response ) => response.json() )
-      .then( ( json ) => {  setResults( json ); } );
+  useEffect(() => {
+    fetch(
+      store.config.dataPath +
+        `areas/${encodeURIComponent(
+          area
+        )}/analysis/bike_infrastructure/results.json`
+    )
+      .then((response) => response.json())
+      .then((json) => {
+        setResults(json);
+      });
 
-		fetch(
-      store.config.dataPath + `areas/${encodeURIComponent(area)}/analysis/bike_infrastructure/results.1y.json`,
-		)
-      .then( ( response ) => response.json() )
-      .then( ( json ) => {  setResults1Y( json ); } );
-
+    fetch(
+      store.config.dataPath +
+        `areas/${encodeURIComponent(
+          area
+        )}/analysis/bike_infrastructure/results.1y.json`
+    )
+      .then((response) => response.json())
+      .then((json) => {
+        setResults1Y(json);
+      });
   }, []);
 
-  return  (
+  return (
     <>
-      <h2>{ config.title }</h2>
-      <p>{ config.description }</p>
-      <Alert variant='warning'>
-        Diese Analyse ist zur Zeit noch sehr experimentell und daher mit Vorsicht zu genießen!
+      <h2>{config.title}</h2>
+      <p>{config.description}</p>
+      <Alert variant="warning">
+        Diese Analyse ist zur Zeit noch sehr experimentell und daher mit
+        Vorsicht zu genießen!
       </Alert>
-      {
-      results !== null && results1Y !== null ? (
+      {results !== null && results1Y !== null ? (
         <>
-        <Row className="my-5 align-items-center">
-        <Col xs={4} sm={3} lg={2}>
-          <Score score={results.score} oldScore={results1Y.score}/>
-        </Col>
-        <Col>
-          <ul className="analysis-values">
-            {
-            Object.keys(config.values).map( key => (
-            <li key={key}>
-              <Value config={config.values[key]} value={results[key]} oldValue={results1Y[key]}/>
-            </li>
-            ) )
-            }
-          </ul>
-        </Col>
-      </Row>
-      { ! mapShown &&
-      <p>
-        <Button onClick={loadFeatures} variant="info">Zeige Karte</Button>
-                       &nbsp;
-        (je nach Größe der Stadt werden viele Daten geladen. Kann auf älteren Computern oder im Mobilfunk Probleme bereiten)
-      </p>
-      }
+          <Row className="my-5 align-items-center">
+            <Col xs={4} sm={3} lg={2}>
+              <Score score={results.score} oldScore={results1Y.score} />
+            </Col>
+            <Col>
+              <ul className="analysis-values">
+                {Object.keys(config.values).map((key) => (
+                  <li key={key}>
+                    <Value
+                      config={config.values[key]}
+                      value={results[key]}
+                      oldValue={results1Y[key]}
+                    />
+                  </li>
+                ))}
+              </ul>
+            </Col>
+          </Row>
+          {!mapShown && (
+            <p>
+              <Button onClick={loadFeatures} variant="info">
+                Zeige Karte
+              </Button>
+              &nbsp; (je nach Größe der Stadt werden viele Daten geladen. Kann
+              auf älteren Computern oder im Mobilfunk Probleme bereiten)
+            </p>
+          )}
         </>
-      ) : <p>Daten werden geladen...</p>
-      }
+      ) : (
+        <p>Daten werden geladen...</p>
+      )}
 
-    <div id="map">
-      { mapShown && ! mapFinished && <Loading/> }
-    </div>
+      <div id="map">{mapShown && !mapFinished && <Loading />}</div>
     </>
   );
 };
 
 class Map {
   constructor(mapid) {
-
     var options = {
       minZoom: 10,
       maxZoom: 24,
     };
 
-    this.map = new L.Map(mapid,options);
+    this.map = new L.Map(mapid, options);
 
-    var osmUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-    var osmAttrib = 'Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors';
-    var overpassAttrib = 'POI via <a href="http://www.overpass-api.de/">Overpass API</a>';
+    var osmUrl = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
+    var osmAttrib =
+      'Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors';
+    var overpassAttrib =
+      'POI via <a href="http://www.overpass-api.de/">Overpass API</a>';
 
-    var osm = new L.TileLayer(osmUrl, {minZoom: 0, maxZoom: 20, attribution: [osmAttrib, overpassAttrib].join(',')});
+    var osm = new L.TileLayer(osmUrl, {
+      minZoom: 0,
+      maxZoom: 20,
+      attribution: [osmAttrib, overpassAttrib].join(","),
+    });
 
     this.map.addLayer(osm);
   }
 
-  getFeatureStyle(feature,highlighted=false) {
+  getFeatureStyle(feature, highlighted = false) {
     return {
       weight: highlighted ? 10 : 3,
       opacity: 0.6,
-      "color": highlighted ? '#0000FF' : feature.properties.category == 'good' ? "#00FF00" : ( feature.properties.category == 'acceptable' ? "#FFCC00" : ( feature.properties.category == 'car' ? "#FF0000" : "#FF00FF" ) ),
+      color: highlighted
+        ? "#0000FF"
+        : feature.properties.category == "good"
+        ? "#00FF00"
+        : feature.properties.category == "acceptable"
+        ? "#FFCC00"
+        : feature.properties.category == "car"
+        ? "#FF0000"
+        : "#FF00FF",
     };
   }
 
@@ -143,32 +174,33 @@ class Map {
     bounds.extend(layerBounds);
 
     layer.on({
-      mouseover: () => layer.setStyle(this.getFeatureStyle(feature,true)),
+      mouseover: () => layer.setStyle(this.getFeatureStyle(feature, true)),
       mouseout: () => layer.setStyle(this.getFeatureStyle(feature)),
     });
   }
 
   getPopupContent(feature) {
-    var content = '';
+    var content = "";
     if (feature.properties.name) {
-      content += '<h2>' + feature.properties.name + '</h2><br>';
+      content += "<h2>" + feature.properties.name + "</h2><br>";
     }
-    content += '<strong>Werte:</strong><br>';
-    for(var property in feature.properties) {
-      if (property === 'id') {
-        var osmLink = '<a target="_blank" href="https://www.openstreetmap.org/'
-                    + feature.properties[property]
-                    + '">View in Open Street Map</a>';
+    content += "<strong>Werte:</strong><br>";
+    for (var property in feature.properties) {
+      if (property === "id") {
+        var osmLink =
+          '<a target="_blank" href="https://www.openstreetmap.org/' +
+          feature.properties[property] +
+          '">View in Open Street Map</a>';
       } else {
-        content += '<i>' + property + ':</i> ' + feature.properties[property] + "<br>";
+        content +=
+          "<i>" + property + ":</i> " + feature.properties[property] + "<br>";
       }
     }
-    content += '<br>' + osmLink;
+    content += "<br>" + osmLink;
     return content;
   }
 
   view(geoJSON) {
-
     L.DomEvent._fakeStop = L.DomEvent.fakeStop;
 
     var bounds = L.latLngBounds([]);
@@ -177,85 +209,89 @@ class Map {
      *   style: this.getFeatureStyle.bind(this),
      * }).addTo(this.map); */
 
-		var highlight;
-		var clearHighlight = function() {
-			if (highlight) {
-				vectorGrid.resetFeatureStyle(highlight);
-			}
-			highlight = null;
-		};
+    var highlight;
+    var clearHighlight = function () {
+      if (highlight) {
+        vectorGrid.resetFeatureStyle(highlight);
+      }
+      highlight = null;
+    };
 
     var self = this;
 
-    var vectorGrid = L.vectorGrid.slicer(geoJSON, {
-      rendererFactory: L.canvas.tile,
-      vectorTileLayerStyles: {
-        sliced: (properties, zoom) => this.getFeatureStyle({ properties: properties}),
-      },
-      interactive: true,
-	    getFeatureId: function(f) {
-				return f.properties.id;
-			},
-      maxZoom: 24,  // max zoom to preserve detail on; can't be higher than 24
-	    tolerance: 10, // simplification tolerance (higher means simpler)
-	    extent: 4096, // tile extent (both width and height)
-	    buffer: 64,   // tile buffer on each side
-	    debug: 0,     // logging level (0 to disable, 1 or 2)
-	    lineMetrics: false, // whether to enable line metrics tracking for LineString/MultiLineString features
-	    promoteId: null,    // name of a feature property to promote to feature.id. Cannot be used with `generateId`
-	    generateId: false,  // whether to generate feature ids. Cannot be used with `promoteId`
-	    indexMaxZoom: 10,       // max zoom in the initial tile index
-	    indexMaxPoints: 100000 // max number of points per tile in the index
-    })
-     .on('click', function(e) {
-       var properties = e.layer.properties;
-       L.popup()
-        .setLatLng(e.latlng)
-        .setContent(self.getPopupContent({properties: properties}))
-        .openOn(self.map);
-     })
-                      .on('mouseover', function(e) {
-                        var properties = e.layer.properties;
-                        clearHighlight();
-                        highlight = properties.id;
+    var vectorGrid = L.vectorGrid
+      .slicer(geoJSON, {
+        rendererFactory: L.canvas.tile,
+        vectorTileLayerStyles: {
+          sliced: (properties, zoom) =>
+            this.getFeatureStyle({ properties: properties }),
+        },
+        interactive: true,
+        getFeatureId: function (f) {
+          return f.properties.id;
+        },
+        maxZoom: 24, // max zoom to preserve detail on; can't be higher than 24
+        tolerance: 10, // simplification tolerance (higher means simpler)
+        extent: 4096, // tile extent (both width and height)
+        buffer: 64, // tile buffer on each side
+        debug: 0, // logging level (0 to disable, 1 or 2)
+        lineMetrics: false, // whether to enable line metrics tracking for LineString/MultiLineString features
+        promoteId: null, // name of a feature property to promote to feature.id. Cannot be used with `generateId`
+        generateId: false, // whether to generate feature ids. Cannot be used with `promoteId`
+        indexMaxZoom: 10, // max zoom in the initial tile index
+        indexMaxPoints: 100000, // max number of points per tile in the index
+      })
+      .on("click", function (e) {
+        var properties = e.layer.properties;
+        L.popup()
+          .setLatLng(e.latlng)
+          .setContent(self.getPopupContent({ properties: properties }))
+          .openOn(self.map);
+      })
+      .on("mouseover", function (e) {
+        var properties = e.layer.properties;
+        clearHighlight();
+        highlight = properties.id;
 
-                        var style = {
-                          opacity: 1,
-                          weight: 3,
-                        };
+        var style = {
+          opacity: 1,
+          weight: 3,
+        };
 
-                        vectorGrid.setFeatureStyle(properties.id, style);
-                      })
-                      .on('mouseout', function(e) {
-                        clearHighlight();
-                      })
-                      .addTo(this.map);
+        vectorGrid.setFeatureStyle(properties.id, style);
+      })
+      .on("mouseout", function (e) {
+        clearHighlight();
+      })
+      .addTo(this.map);
 
-		/* this.map.on('click', clearHighlight); */
+    /* this.map.on('click', clearHighlight); */
 
     var bbox = getBoundingBox(geoJSON);
     console.log(bbox);
-    this.map.fitBounds(
-      [
-        [bbox.yMin, bbox.xMin],
-        [bbox.yMax, bbox.xMax]
-      ]
-    );
-  };
+    this.map.fitBounds([
+      [bbox.yMin, bbox.xMin],
+      [bbox.yMax, bbox.xMax],
+    ]);
+  }
 }
 function getBoundingBox(data) {
-  var bounds = {}, coordinates, point, latitude, longitude;
+  var bounds = {},
+    coordinates,
+    point,
+    latitude,
+    longitude;
 
   // Loop through each "feature"
   for (var i = 0; i < data.features.length; i++) {
     coordinates = data.features[i].geometry.coordinates;
 
-    if(coordinates.length === 1){
+    if (coordinates.length === 1) {
       // It's only a single Polygon
       // For each individual coordinate in this feature's coordinates...
       for (var j = 0; j < coordinates[0].length; j++) {
         longitude = coordinates[0][j][0];
-        latitude  = coordinates[0][j][1];
+        latitude = coordinates[0][j][1];
 
         // Update the bounds recursively by comparing the current xMin/xMax and yMin/yMax with the current coordinate
         bounds.xMin = bounds.xMin < longitude ? bounds.xMin : longitude;
@@ -270,7 +306,7 @@ function getBoundingBox(data) {
         // For each individual coordinate in this coordinate set...
         for (var k = 0; k < coordinates[j][0].length; k++) {
           longitude = coordinates[j][0][k][0];
-          latitude  = coordinates[j][0][k][1];
+          latitude = coordinates[j][0][k][1];
 
           // Update the bounds recursively by comparing the current xMin/xMax and yMin/yMax with the current coordinate
           bounds.xMin = bounds.xMin < longitude ? bounds.xMin : longitude;

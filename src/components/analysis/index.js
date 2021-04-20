@@ -1,5 +1,6 @@
 import React, { button, useEffect, useState } from "react";
 import { Alert, Button, Row, Col } from "react-bootstrap";
+import chroma from "chroma-js";
 import Loading from "../loading";
 import Score from "./score.js";
 import Value from "./value.js";
@@ -131,6 +132,7 @@ const Analysis = ({ area, analysis, store }) => {
 
 class Map {
   constructor(mapid) {
+    this.colorScale = chroma.scale('Spectral');
     var options = {
       minZoom: 10,
       maxZoom: 24,
@@ -156,15 +158,11 @@ class Map {
   getFeatureStyle(feature, highlighted = false) {
     return {
       weight: highlighted ? 10 : 3,
-      opacity: 0.6,
+      opacity: 0.8,
       color: highlighted
-        ? "#0000FF"
-        : feature.properties.category == "good"
-        ? "#00FF00"
-        : feature.properties.category == "acceptable"
-        ? "#FFCC00"
-        : feature.properties.category == "car"
-        ? "#FF0000"
+           ? "#0000FF"
+           : feature.properties.score > 0
+          ? this.colorScale(feature.properties.score).hex()
         : "#FF00FF",
     };
   }
@@ -268,7 +266,6 @@ class Map {
     /* this.map.on('click', clearHighlight); */
 
     var bbox = getBoundingBox(geoJSON);
-    console.log(bbox);
     this.map.fitBounds([
       [bbox.yMin, bbox.xMin],
       [bbox.yMax, bbox.xMax],

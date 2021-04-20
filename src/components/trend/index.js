@@ -1,8 +1,8 @@
 import React from "react";
 import Icon from "../icon";
+import "./style.scss";
 
 export default function Trend({ value, oldValue, lowerIsBetter, increase }) {
-  console.log(increase);
   if ( increase === undefined ) {
     increase = Math.round((value / oldValue - 1) * 1000) / 10;
   } else {
@@ -12,7 +12,7 @@ export default function Trend({ value, oldValue, lowerIsBetter, increase }) {
   let negative = increase < -2;
   return (
     <span
-      className={
+      className={ "trend " +
         (lowerIsBetter ? "value--lower-is-better " : "") +
         `value__relative--${
           positive ? "increase" : negative ? "decrease" : "constant"
@@ -22,7 +22,9 @@ export default function Trend({ value, oldValue, lowerIsBetter, increase }) {
       <Icon
         name={`arrow-circle-${positive ? "up" : negative ? "down" : "right"}`}
       />{" "}
-      {(increase > 0 ? "+" : "") + increase}%
+      <span>
+      {(increase > 0 ? "+" : "") + increase.toFixed(1)}%
+      </span>
     </span>
   );
 }

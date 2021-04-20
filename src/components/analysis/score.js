@@ -9,7 +9,7 @@ import "react-circular-progressbar/dist/styles.css";
 
 export default function Score({ score, oldScore }) {
   const percentage = Math.round(score * 100);
-  const color = percentage < 25 ? "red" : percentage < 50 ? "orange" : "green";
+  const color = percentage < 45 ? "red" : percentage < 55 ? "orange" : "green";
 
   return (
     <div className="analysis-score">
@@ -23,8 +23,12 @@ export default function Score({ score, oldScore }) {
             })}
           >
             <span className="font-weight-bold">{`${percentage}%`}</span>
-            <br />
-            <Trend oldValue={oldScore} value={score} />
+            { oldScore && (
+                <>
+                  <br />
+                  <Trend oldValue={oldScore} value={score} />
+                </>
+            ) }
           </CircularProgressbarWithChildren>
         )}
       </ProgressProvider>

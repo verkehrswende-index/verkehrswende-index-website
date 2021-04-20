@@ -3,6 +3,8 @@ import Trend from "../../components/trend";
 import { Link } from "react-router-dom";
 import { useFilters, useTable, useSortBy } from 'react-table';
 import { Table } from 'react-bootstrap';
+import Score from "../analysis/score.js";
+import "./style.scss";
 
 function DefaultColumnFilter({
   column: { filterValue, preFilteredRows, setFilter },
@@ -44,8 +46,8 @@ const IndexTable = ({data}) => {
       {
         Header: 'Punkte',
         disableFilters: true,
+        Cell: ({value}) => <Score score={value}/>,
         accessor: 'score',
-        Cell: ({value}) => Math.round(value * 100) + '%',
         sortType: 'basic',
         style: { width: '7em' },
       },
@@ -70,7 +72,7 @@ const IndexTable = ({data}) => {
    return (
      <>
      <p>{headerGroups[0].headers[0].canFilter ? headerGroups[0].headers[0].render('Filter') : null}</p>
-     <Table {...getTableProps()}>
+     <Table {...getTableProps()} className="index-table">
        <thead>
          {// Loop over the header rows
          headerGroups.map(headerGroup => (

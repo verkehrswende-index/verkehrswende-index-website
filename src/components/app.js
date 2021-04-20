@@ -1,14 +1,13 @@
 // import { Router } from 'react-router-dom';
 import React from "react";
 import { Helmet } from "react-helmet";
-import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom";
+import { Redirect, BrowserRouter as Router, Route, Switch, Link } from "react-router-dom";
 
 import { Footer, Container, Row, Col } from "react-bootstrap";
 
 import Header from "./header";
 
 // Code-splitting is automated for `routes` directory
-import Home from "../routes/home";
 import Index from "../routes/index";
 import About from "../routes/about";
 import Area from "../routes/area";
@@ -32,9 +31,11 @@ const App = () => (
         <Row className="mt-5">
           <Col>
             <Switch>
-              <Route exact path="/" component={Home} />
-              <Route exact path="/index">
+              <Route exact path="/">
                 <Index store={store} />
+              </Route>
+              <Route exact path="/index">
+                <Redirect to="/"/>
               </Route>
               <Route exact path="/ueber" component={About} />
               <Route

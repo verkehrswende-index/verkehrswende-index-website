@@ -9,7 +9,7 @@ import "react-circular-progressbar/dist/styles.css";
 
 export default function Score({ score, oldScore }) {
   const percentage = Math.round(score * 100);
-  const color = percentage < 45 ? "red" : percentage < 55 ? "orange" : "green";
+  const color = percentage < 45 ? "red" : percentage < 60 ? "orange" : "green";
 
   return (
     <div className="analysis-score">

@@ -33,6 +33,9 @@ const Index = ({ store }) => {
             ist jeweils ein Wert zwischen 0% und 100%. Die Werte werden gewichtet
             und ergeben zusammen dann das Endergebnis.
           </p>
+          <p>
+            Als Referenz werden zudem einige weitere euopäische Städte untersucht.
+          </p>
         </Col>
         <Col>
           <Alert variant="warning">

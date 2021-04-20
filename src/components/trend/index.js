@@ -1,8 +1,13 @@
 import React from "react";
 import Icon from "../icon";
 
-export default function Trend({ value, oldValue, lowerIsBetter }) {
-  let increase = Math.round((value / oldValue - 1) * 1000) / 10;
+export default function Trend({ value, oldValue, lowerIsBetter, increase }) {
+  console.log(increase);
+  if ( increase === undefined ) {
+    increase = Math.round((value / oldValue - 1) * 1000) / 10;
+  } else {
+    increase = Math.round( increase * 1000 ) / 10;
+  }
   let positive = increase > 2;
   let negative = increase < -2;
   return (

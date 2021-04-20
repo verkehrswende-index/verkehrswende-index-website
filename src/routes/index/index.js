@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import Loading from "../../components/loading";
+import IndexTable from "../../components/index-table";
 import { Alert } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
@@ -30,20 +31,7 @@ const Index = ({ store }) => {
         ist jeweils ein Wert zwischen 0% und 100%. Die Werte werden gewichtet
         und ergeben zusammen dann das Endergebnis.
       </Alert>
-      {data ? (
-        <ol>
-          {data.areas.map((area) => (
-            <li key={area.name}>
-              <Link to={`/gebiete/${area.slug}/analysen/radinfrastruktur`}>
-                {area.name}
-              </Link>
-              &nbsp; {Math.round(area.score * 100)}%
-            </li>
-          ))}
-        </ol>
-      ) : (
-        <Loading />
-      )}
+      {data ? <IndexTable data={data}/> : <Loading />}
     </>
   );
 };

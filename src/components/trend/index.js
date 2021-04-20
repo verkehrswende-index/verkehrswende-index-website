@@ -8,6 +8,9 @@ export default function Trend({ value, oldValue, lowerIsBetter, increase }) {
   } else {
     increase = Math.round( increase * 1000 ) / 10;
   }
+  if (Math.abs(increase) === Infinity) {
+    return <></>;
+  }
   let positive = increase > 2;
   let negative = increase < -2;
   return (

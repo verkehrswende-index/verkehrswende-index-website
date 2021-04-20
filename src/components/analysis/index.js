@@ -23,9 +23,9 @@ im Verhältnis zu allen Wegen?
         title: "Akzeptabel",
         unit: "m",
         description:
-          "Minimal/Akzeptable Rad-Infrastruktur sowie Wege mit Tempo 30",
+       "Minimal/Akzeptable Rad-Infrastruktur sowie Wege mit Tempo 30",
       },
-      car: {
+      bad: {
         title: "Schlecht",
         unit: "m",
         description: "Schlechte oder nicht vorhandene Rad-Infrastruktur",
@@ -99,7 +99,7 @@ const Analysis = ({ area, analysis, store }) => {
             </Col>
             <Col>
               <ul className="analysis-values">
-                {Object.keys(config.values).map((key) => (
+                {Object.keys(config.values || []).map((key) => (
                   <li key={key}>
                     <Value
                       config={config.values[key]}

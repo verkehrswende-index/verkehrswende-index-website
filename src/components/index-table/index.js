@@ -28,6 +28,7 @@ const IndexTable = ({data}) => {
       slug: area.slug,
       score: area.score,
       trend: area.score / area.score1Y - 1,
+      mayorParty: area.mayorParty,
     } } ) : []),
     [data]
   );
@@ -42,6 +43,12 @@ const IndexTable = ({data}) => {
             {value}
           </Link>
         ),
+      },
+      {
+        Header: 'Bürgermeister*in',
+        disableFilters: true,
+        accessor: 'mayorParty',
+        style: { width: '10em' },
       },
       {
         Header: 'Punkte',

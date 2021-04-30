@@ -29,15 +29,15 @@ export default function getBoundingBox(features) {
   for (var i = 0; i < features.length; i++) {
     const coordinates = features[i].geometry.coordinates;
     const geoType = features[i].geometry.type;
-    if (geoType === 'Point') {
-      bounds = fitBounds(bounds,coordinates[0], coordinates[1]);
-    } else if (geoType === 'LineString') {
+    if (geoType === "Point") {
+      bounds = fitBounds(bounds, coordinates[0], coordinates[1]);
+    } else if (geoType === "LineString") {
       for (var j = 0; j < coordinates.length; j++) {
-        bounds = fitBounds(bounds,coordinates[j][0], coordinates[j][1]);
+        bounds = fitBounds(bounds, coordinates[j][0], coordinates[j][1]);
       }
-    } else if (geoType === 'Polygon') {
+    } else if (geoType === "Polygon") {
       for (var j = 0; j < coordinates[0].length; j++) {
-        bounds = fitBounds(bounds,coordinates[0][j][0], coordinates[0][j][1]);
+        bounds = fitBounds(bounds, coordinates[0][j][0], coordinates[0][j][1]);
       }
     }
   }

@@ -11,8 +11,8 @@ export default function Trend({ value, oldValue, lowerIsBetter, increase }) {
   if (Math.abs(increase) === Infinity) {
     return <></>;
   }
-  let positive = increase > 2;
-  let negative = increase < -2;
+  let positive = increase > 1;
+  let negative = increase < -1;
   return (
     <span
       className={ "trend " +

@@ -5,12 +5,10 @@ import { useParams } from "react-router-dom";
 import Analysis from "../../components/analysis";
 import Loading from "../../components/loading";
 
-// Note: `user` comes from the URL, courtesy of our router
+import registeredAnalysis from '../../components/analysis/registered.js';
+
 const Area = ({ store }) => {
   let { area, analysis } = useParams();
-
-  // const [time, setTime] = useState(Date.now());
-  // const [count, setCount] = useState(10);
 
   const [data, setData] = useState(null);
 
@@ -23,19 +21,20 @@ const Area = ({ store }) => {
         setData(json);
       });
   }, []);
-
   const helmet = (
     <Helmet>
       <title>{data ? data.name : "Gebiet"}</title>
     </Helmet>
   );
-
+  const analysisToShow = analysis ? [analysis] : Object.keys(registeredAnalysis);
   return [
     helmet,
     data ? (
       <div>
         <h1>{data.name}</h1>
-        {analysis && <Analysis id={analysis} area={area} store={store} />}
+        {analysisToShow.map((id) =>
+          <Analysis key={id} id={id} area={area} store={store} className="mb-5" />
+        )}
         <p></p>
       </div>
     ) : (

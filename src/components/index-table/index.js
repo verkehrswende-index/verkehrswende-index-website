@@ -1,4 +1,5 @@
 import React from "react";
+import Population from "../../components/population";
 import Trend from "../../components/trend";
 import { Link } from "react-router-dom";
 import { useFilters, useTable, useSortBy } from 'react-table';
@@ -26,6 +27,8 @@ const IndexTable = ({data}) => {
     () => (data ? data.areas.map((area) => { return {
       name: area.name,
       slug: area.slug,
+      population: area.population,
+      scores: area.scores,
       score: area.score,
       trend: area.score / area.score1Y - 1,
       mayorParty: area.mayorParty,
@@ -39,16 +42,10 @@ const IndexTable = ({data}) => {
         accessor: 'name',
         Filter: DefaultColumnFilter,
         Cell: ({value, row}) => (
-          <Link to={`/gebiete/${row.original.slug}/analysen/radinfrastruktur`}>
+          <Link to={`/gebiete/${row.original.slug}`}>
             {value}
           </Link>
         ),
-      },
-      {
-        Header: 'Bürgermeister*in',
-        disableFilters: true,
-        accessor: 'mayorParty',
-        style: { width: '10em' },
       },
       {
         Header: 'Punkte',
@@ -65,6 +62,36 @@ const IndexTable = ({data}) => {
         accessor: 'trend',
         sortType: 'basic',
         style: { width: '8em' },
+      },
+      {
+        Header: 'Einwohner*innnnen',
+        disableFilters: true,
+        accessor: 'population',
+        sortType: 'basic',
+        Cell: ({value}) => <Population value={value}/>,
+        style: { width: '7em' },
+      },
+      {
+        Header: 'Radinfrastruktur',
+        disableFilters: true,
+        Cell: ({value}) => <Score score={value}/>,
+        accessor: 'scores.bike_infrastructure.score',
+        sortType: 'basic',
+        style: { width: '7em' },
+      },
+      {
+        Header: 'PKW-Dichte',
+        disableFilters: true,
+        Cell: ({value}) => (value !== null ? <Score score={value}/> : ''),
+        accessor: 'scores.cars_per_resident.score',
+        sortType: 'basic',
+        style: { width: '7em' },
+      },
+      {
+        Header: 'Bürgermeister*in',
+        disableFilters: true,
+        accessor: 'mayorParty',
+        style: { width: '10em' },
       },
     ],
     []

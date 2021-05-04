@@ -7,7 +7,7 @@
     "build": "parcel ${PARCEL_BUILD_COMMAND:-build} src/index.html",
     "dev": "PARCEL_BUILD_COMMAND=serve npm run build",
     "lint": "eslint src",
-    "test": "jest",
+    "test": "nodejs --experimental-vm-modules node_modules/.bin/jest --config=src/jest.config.js",
     "prettify": "prettier --write src"
   },
   "dependencies": {
@@ -39,6 +39,7 @@
     "@parcel/transformer-sass": "^2.0.0-nightly.643",
     "eslint": "^7.24.0",
     "eslint-plugin-react": "^7.23.2",
+    "jest": "^26.6.3",
     "prettier": "2.2.1",
     "sass": "^1.32.8"
   }

@@ -21,9 +21,9 @@ export default function Value({ config, value, oldValue }) {
       <span>
         <strong>{config.title}</strong>:{" "}
         {
-          (config.unit = "m"
+          (config.unit == "m"
             ? Math.round(value / 1000) + " km"
-            : value + " " + config.unit)
+            : Math.round(value*1000)/1000 + ( config.unit ? ' ' + config.unit : '' ) )
         }
         &nbsp;
         <Trend

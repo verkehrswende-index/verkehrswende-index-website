@@ -15,8 +15,8 @@ import Contact from "../routes/contact";
 
 var store = {
   config: {
-    /* 'dataPath': '/data/', */
-    dataPath: "http://localhost:3000/",
+    'dataPath': '/data/',
+    // dataPath: "http://localhost:3000/",
   },
 };
 

@@ -1,4 +1,22 @@
 .index-table {
+  th {
+    i {
+      font-size: 2rem;
+      color: #6c6753;
+      &.fa-hashtag {
+        font-size: 1rem;
+      }
+      &.fa-trophy {
+        color: #d4aa00;
+      }
+      &.fa-car {
+        color: #ff8080;
+      }
+      &.fa-bicycle {
+        color: #89a02c;
+      }
+    }
+  }
   td[role="cell"] {
     vertical-align: middle;
   }

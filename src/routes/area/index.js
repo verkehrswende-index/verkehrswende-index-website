@@ -1,9 +1,12 @@
+const __ = (x,y) => x;
+
 import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { useParams } from "react-router-dom";
 
 import Analysis from "../../components/analysis";
 import Loading from "../../components/loading";
+import Population from "../../components/population";
 
 import registeredAnalysis from '../../components/analysis/registered.js';
 
@@ -21,26 +24,30 @@ const Area = ({ store }) => {
         setData(json);
       });
   }, []);
-  const helmet = (
-    <Helmet>
-      <title>{data ? data.name : "Gebiet"}</title>
-    </Helmet>
-  );
   const analysisToShow = analysis ? [analysis] : Object.keys(registeredAnalysis);
-  return [
-    helmet,
-    data ? (
+  return (
+    <>
+      <Helmet>
+        <title>{data ? data.name : "Gebiet"}</title>
+      </Helmet>
+      { data ? (
       <div>
         <h1>{data.name}</h1>
+        <p>
+          <strong>{__( 'Einwohner*innen' )}:</strong> <Population value={data.population}/>
+          {/* <br/> */}
+          {/* <strong>{__( 'Bürgermeister*in' )}:</strong> <Population value={data.mayorParty}/> */}
+        </p>
         {analysisToShow.map((id) =>
           <Analysis key={id} id={id} area={area} store={store} className="mb-5" />
         )}
         <p></p>
       </div>
-    ) : (
-      <Loading />
-    ),
-  ];
+      ) : (
+        <Loading />
+      ) }
+    </>
+  );
 };
 
 export default Area;

@@ -1,6 +1,9 @@
+const __ = (x,y) => x;
+
 import React from "react";
 import Population from "../../components/population";
 import Trend from "../../components/trend";
+import Icon from "../../components/icon";
 import { Link } from "react-router-dom";
 import { useFilters, useTable, useSortBy } from 'react-table';
 import { Table } from 'react-bootstrap';
@@ -24,7 +27,8 @@ function DefaultColumnFilter({
 
 const IndexTable = ({data}) => {
   const tableData = React.useMemo(
-    () => (data ? data.areas.map((area) => { return {
+    () => (data ? data.areas.map((area,index) => { return {
+      index: index + 1,
       name: area.name,
       slug: area.slug,
       population: area.population,
@@ -38,41 +42,58 @@ const IndexTable = ({data}) => {
   const columns = React.useMemo(
     () => [
       {
-        Header: 'Stadt',
-        accessor: 'name',
-        Filter: DefaultColumnFilter,
-        Cell: ({value, row}) => (
-          <Link to={`/gebiete/${row.original.slug}`}>
-            {value}
-          </Link>
-        ),
+        Header: <Icon name="hashtag" title={__("Position")}/>,
+        disableFilters: true,
+        accessor: 'index',
+        sortType: 'basic',
+        style: { width: '0em' },
       },
       {
-        Header: 'Punkte',
+        Header: <Icon name="trophy" title={__("Gesamt-Punkte")}/>,
         disableFilters: true,
         Cell: ({value}) => <Score score={value}/>,
         accessor: 'score',
         sortType: 'basic',
-        style: { width: '7em' },
+        style: { width: '5em' },
       },
       {
-        Header: 'Trend',
+        Header: <Icon name="map-signs" title={__("Ort")}/>,
+        accessor: 'name',
+        Filter: DefaultColumnFilter,
+        Cell: ({value, row}) => (
+          <>
+          <Link to={`/gebiete/${row.original.slug}`}>
+          {value}
+          </Link><br/>
+          <small className="text-muted">
+          <Icon
+          name={`users`}
+          title={__( 'Einwohner*innen' )}
+          />
+          &nbsp;
+            <span className="text-muted"><Population value={row.original.population}/></span>
+          </small>
+          </>
+        ),
+      },
+      {
+        Header: <Icon name="line-chart" title={__("Trend")}/>,
         disableFilters: true,
         Cell: ({value}) => <Trend increase={value}/>,
         accessor: 'trend',
         sortType: 'basic',
         style: { width: '8em' },
       },
+      /* {
+       *   Header: 'Einwohner*innnnen',
+       *   disableFilters: true,
+       *   accessor: 'population',
+       *   sortType: 'basic',
+       *   Cell: ({value}) => <Population value={value}/>,
+       *   style: { width: '7em' },
+       * }, */
       {
-        Header: 'Einwohner*innnnen',
-        disableFilters: true,
-        accessor: 'population',
-        sortType: 'basic',
-        Cell: ({value}) => <Population value={value}/>,
-        style: { width: '7em' },
-      },
-      {
-        Header: 'Radinfrastruktur',
+        Header: <Icon name="bicycle" title={__("Rad-Freundlichkeit")}/>,
         disableFilters: true,
         Cell: ({value}) => <Score score={value}/>,
         accessor: 'scores.bike_infrastructure.score',
@@ -80,19 +101,19 @@ const IndexTable = ({data}) => {
         style: { width: '7em' },
       },
       {
-        Header: 'PKW-Dichte',
+        Header: <Icon name="car" title={__("Auto-Unfreundlichkeit")}/>,
         disableFilters: true,
         Cell: ({value}) => (value !== null ? <Score score={value}/> : ''),
         accessor: 'scores.cars_per_resident.score',
         sortType: 'basic',
         style: { width: '7em' },
       },
-      {
-        Header: 'Bürgermeister*in',
-        disableFilters: true,
-        accessor: 'mayorParty',
-        style: { width: '10em' },
-      },
+      /* {
+       *   Header: 'Bürgermeister*in',
+       *   disableFilters: true,
+       *   accessor: 'mayorParty',
+       *   style: { width: '10em' },
+       * }, */
     ],
     []
   );

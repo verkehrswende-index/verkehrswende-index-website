@@ -1,5 +1,6 @@
 import React, { button, useEffect, useState } from "react";
 import { Alert, Button, Row, Col } from "react-bootstrap";
+import Icon from "../icon";
 import Loading from "../loading";
 import Map from "./map.mjs";
 import Score from "./score.js";
@@ -64,6 +65,7 @@ const Analysis = ({ area, id, store, className }) => {
       <h2>{config.title}</h2>
       <p>{config.description}</p>
       <Alert variant="warning">
+        <Icon name="flask"/>&nbsp;
         Diese Analyse ist zur Zeit noch sehr experimentell und daher mit
         Vorsicht zu genießen!
       </Alert>

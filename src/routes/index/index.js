@@ -3,6 +3,7 @@ import { Row, Col } from "react-bootstrap";
 import { Helmet } from "react-helmet";
 import Loading from "../../components/loading";
 import IndexTable from "../../components/index-table";
+import Icon from "../../components/icon";
 import { Alert } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
@@ -40,6 +41,7 @@ const Index = ({ store }) => {
         <Col>
           <Alert variant="warning">
             <p>
+              <Icon name="flask"/>&nbsp;
               Der Index ist noch sehr <strong>experimentell</strong> und umfasst aktuell nur kreisfreie
               Städte. Morgen könnte schon wieder alles anders aussehen.
             </p>

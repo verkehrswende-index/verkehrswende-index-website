@@ -10,7 +10,6 @@ import "./style.scss";
 import registeredAnalysis from './registered.js';
 
 const Analysis = ({ area, id, store, className }) => {
-  console.log(id,registeredAnalysis);
   const config = registeredAnalysis[id];
 
   const [results, setResults] = useState(null);

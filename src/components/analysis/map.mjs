@@ -136,7 +136,6 @@ export default class Map {
     /* this.map.on('click', clearHighlight); */
 
     var bbox = getBoundingBox(geoJSON.features);
-    console.log(bbox);
     this.map.fitBounds([
       [bbox.yMin, bbox.xMin],
       [bbox.yMax, bbox.xMax],

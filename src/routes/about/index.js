@@ -1,7 +1,7 @@
 import React from "react";
 import { Helmet } from "react-helmet";
 
-const About = () => (
+const Home = () => (
   <>
     <Helmet>
       <title>Über das Projekt</title>
@@ -44,4 +44,4 @@ const About = () => (
   </>
 );
 
-export default About;
+export default Home;

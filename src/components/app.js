@@ -8,6 +8,7 @@ import { Footer, Container, Row, Col } from "react-bootstrap";
 import Header from "./header";
 
 // Code-splitting is automated for `routes` directory
+import Home from "../routes/home";
 import Index from "../routes/index";
 import About from "../routes/about";
 import Area from "../routes/area";
@@ -32,10 +33,10 @@ const App = () => (
           <Col>
             <Switch>
               <Route exact path="/">
-                <Index store={store} />
+                <Home />
               </Route>
               <Route exact path="/index">
-                <Redirect to="/"/>
+                <Index store={store} />
               </Route>
               <Route exact path="/ueber" component={About} />
               <Route

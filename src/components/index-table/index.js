@@ -101,6 +101,14 @@ const IndexTable = ({data}) => {
         style: { width: '7em' },
       },
       {
+        Header: <Icon name="bus" title={__("ÖPNV-Angebot")}/>,
+        disableFilters: true,
+        Cell: ({value}) => <Score score={value}/>,
+        accessor: 'scores.stop_distance.score',
+        sortType: 'basic',
+        style: { width: '7em' },
+      },
+      {
         Header: <Icon name="car" title={__("Auto-Unfreundlichkeit")}/>,
         disableFilters: true,
         Cell: ({value}) => (value !== null ? <Score score={value}/> : ''),

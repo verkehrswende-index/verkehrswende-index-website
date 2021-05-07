@@ -72,7 +72,7 @@ const Analysis = ({ area, id, store, className }) => {
         <>
           <Row className="my-5 align-items-center">
             <Col xs={4} sm={3} lg={2}>
-              <Score score={results.score} oldScore={results1Y.score} />
+              <Score showMaxScore={true} score={results.score} oldScore={results1Y.score} />
             </Col>
             <Col>
               <ul className="analysis-values">

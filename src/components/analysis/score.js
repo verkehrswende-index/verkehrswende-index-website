@@ -7,7 +7,7 @@ import ProgressProvider from "./ProgressProvider";
 import Trend from "../trend";
 import "react-circular-progressbar/dist/styles.css";
 
-export default function Score({ score, oldScore }) {
+export default function Score({ score, oldScore, showMaxScore }) {
   const percentage = Math.round(score * 100);
   const color = percentage < 45 ? "red" : percentage < 60 ? "orange" : "green";
 
@@ -22,7 +22,7 @@ export default function Score({ score, oldScore }) {
               pathColor: color,
             })}
           >
-            <span className="font-weight-bold">{`${percentage}%`}</span>
+            <span className="font-weight-bold">{`${percentage}`}{ showMaxScore && '/100'}</span>
             { oldScore && (
                 <>
                   <br />

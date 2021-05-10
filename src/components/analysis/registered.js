@@ -5,7 +5,13 @@ var registeredAnalysis = {
     description: `
 Wie viel PKW kommen auf eine*n Einwohner*in?
     `,
-    map: {},
+    map: {
+      features: {
+        default: {
+          name: 'Haltestelle',
+        }
+      },
+    },
     values: {
       // 'cars_per_resident': {
       //   title: "PKWs pro Einwohner*in",
@@ -33,7 +39,13 @@ Wie viel PKW kommen auf eine*n Einwohner*in?
 Wie viele Radwege und Radspuren gibt es
 im Verhältnis zu allen Wegen?
     `,
-    map: {},
+    map: {
+      features: {
+        default: {
+          name: 'Ignorierter Weg (Fußwege, Privatwege, ...)',
+        }
+      },
+    },
     values: {
       good: {
         title: "Gut",

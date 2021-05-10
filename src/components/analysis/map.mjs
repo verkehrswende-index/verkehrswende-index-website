@@ -3,8 +3,10 @@ import getBoundingBox from "../../geo/get-bounding-box.mjs";
 import "../../../../../Leaflet.VectorGrid/dist/Leaflet.VectorGrid.bundled.min.js";
 
 export default class Map {
-  constructor(mapid) {
+  constructor(mapid, mapSettings) {
+    this.mapSettings = mapSettings;
     this.colorScale = chroma.scale('Spectral');
+    this.unknownColor = "#FF00FF";
     var options = {
       minZoom: 10,
       maxZoom: 24,
@@ -25,6 +27,25 @@ export default class Map {
     });
 
     this.map.addLayer(osm);
+    this.addColorLegend();
+  }
+
+  addColorLegend() {
+    const legend = L.control({position: 'bottomright'});
+    legend.onAdd = (map) => {
+      var div = L.DomUtil.create('div', 'feature-map__info feature-map__score-legend');
+      var inner = "Punkte:<br><span>0</span>";
+      inner += '<i style="width: 100px; background: linear-gradient(to right';
+      for (var i = 0; i <= 1.0; i = i + 0.1) {
+        inner += ',' + this.colorScale(i).hex();
+      }
+      inner += ')"></i><span>100</span><br>';
+      inner += `<i style="width: 10px; background: ${this.unknownColor}"></i> `;
+      inner += this.mapSettings.features.default.name;
+      div.innerHTML = inner;
+      return div;
+    };
+    legend.addTo(this.map);
   }
 
   getFeatureStyle(feature, highlighted = false) {
@@ -35,7 +56,7 @@ export default class Map {
            ? "#0000FF"
            : feature.properties.score > 0
           ? this.colorScale(feature.properties.score).hex()
-        : "#FF00FF",
+        : this.unknownColor,
     };
   }
 

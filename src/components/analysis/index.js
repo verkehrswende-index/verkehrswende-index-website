@@ -21,7 +21,7 @@ const Analysis = ({ area, id, store, className }) => {
 
   const loadFeatures = () => {
     setMapShown(true);
-    var map = new Map(`map-${id}`);
+    var map = new Map(`map-${id}`, config.map);
     fetch(
       store.config.dataPath +
         `areas/${encodeURIComponent(

@@ -27,16 +27,28 @@ function DefaultColumnFilter({
 
 const IndexTable = ({data}) => {
   const tableData = React.useMemo(
-    () => (data ? data.areas.map((area,index) => { return {
-      index: index + 1,
-      name: area.name,
-      slug: area.slug,
-      population: area.population,
-      scores: area.scores,
-      score: area.score,
-      trend: area.score / area.score1Y - 1,
-      mayorParty: area.mayorParty,
-    } } ) : []),
+    () => {
+      if ( ! data ) {
+        return [];
+      }
+      var position = 0;
+      return data.areas.map((area) => {
+        const isInternational = 'international' in area;
+        if ( ! isInternational ) {
+          position += 1;
+        }
+        return {
+          index: isInternational ? null : position,
+          name: area.name,
+          slug: area.slug,
+          population: area.population,
+          scores: area.scores,
+          score: area.score,
+          trend: area.score / area.score1Y - 1,
+          mayorParty: area.mayorParty,
+        };
+      });
+    },
     [data]
   );
   const columns = React.useMemo(

@@ -129,12 +129,13 @@ const IndexTable = ({data}) => {
     getTableProps,
     getTableBodyProps,
     headerGroups,
+    allColumns,
     rows,
     prepareRow,
   } = useTable({ columns, data: tableData }, useFilters, useSortBy);
    return (
      <>
-     <p>{headerGroups[0].headers[0].canFilter ? headerGroups[0].headers[0].render('Filter') : null}</p>
+     <p>{allColumns[2].render('Filter')}</p>
      <Table {...getTableProps()} className="index-table">
        <thead>
          {// Loop over the header rows

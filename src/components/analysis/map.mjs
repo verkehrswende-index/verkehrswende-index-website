@@ -48,23 +48,16 @@ export default class Map {
     legend.addTo(this.map);
   }
 
-  getFeatureStyle(feature, highlighted = false) {
+  getFeatureStyle({properties, zoom, dimension}, highlighted = false) {
     return {
-      weight: highlighted ? 10 : 3,
+      weight: highlighted ? 10 : ( dimension === 1 ? 3 : 5 ),
       opacity: 0.8,
       color: highlighted
            ? "#0000FF"
-           : feature.properties.score > 0
-          ? this.colorScale(feature.properties.score).hex()
+           : properties.score > 0
+          ? this.colorScale(properties.score).hex()
         : this.unknownColor,
     };
-  }
-
-  onEachFeature(bounds, feature, layer) {
-    layer.on({
-      mouseover: () => layer.setStyle(this.getFeatureStyle(feature, true)),
-      mouseout: () => layer.setStyle(this.getFeatureStyle(feature)),
-    });
   }
 
   getPopupContent(feature) {
@@ -91,13 +84,6 @@ export default class Map {
   view(geoJSON) {
     L.DomEvent._fakeStop = L.DomEvent.fakeStop;
 
-    var bounds = L.latLngBounds([]);
-
-    /* L.geoJSON(geoJSON.features, {
-     *   onEachFeature: this.onEachFeature.bind(this, bounds),
-     *   style: this.getFeatureStyle.bind(this),
-     * }).addTo(this.map); */
-
     var highlight;
     var clearHighlight = function () {
       if (highlight) {
@@ -112,8 +98,8 @@ export default class Map {
       .slicer(geoJSON, {
         rendererFactory: L.canvas.tile,
         vectorTileLayerStyles: {
-          sliced: (properties, zoom) =>
-            this.getFeatureStyle({ properties: properties }),
+          sliced: (properties, zoom, dimension) =>
+          this.getFeatureStyle({ properties, zoom, dimension}),
         },
         interactive: true,
         getFeatureId: function (f) {

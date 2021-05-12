@@ -61,7 +61,7 @@ const IndexTable = ({data}) => {
         style: { width: '0em' },
       },
       {
-        Header: <Icon name="trophy" title={__("Gesamt-Punkte")}/>,
+        Header: <Icon name="trophy" title={__("Gesamtpunkte")}/>,
         disableFilters: true,
         Cell: ({value}) => <Score score={value}/>,
         accessor: 'score',
@@ -121,7 +121,7 @@ const IndexTable = ({data}) => {
         style: { width: '7em' },
       },
       {
-        Header: <Icon name="car" title={__("Auto-Unfreundlichkeit")}/>,
+        Header: <Icon name="ban-car" title={__("Auto-Verdrängung")}/>,
         disableFilters: true,
         Cell: ({value}) => (value !== null ? <Score score={value}/> : ''),
         accessor: 'scores.cars_per_resident.score',

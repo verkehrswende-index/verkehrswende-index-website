@@ -1,9 +1,9 @@
 var registeredAnalysis = {
-  'haltestellen-entfernung': {
+  'haltestellen-abdeckung': {
     name: 'stop_distance',
-    title: "Haltestellen-Entfernung",
+    title: "Haltestellen-Abdeckung",
     description: `
-Wie viel PKW kommen auf eine*n Einwohner*in?
+Wie weit ist es bis zur nächsten ÖPNV-Haltestelle?
     `,
     map: {
       features: {

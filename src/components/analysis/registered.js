@@ -2,6 +2,7 @@ var registeredAnalysis = {
   'haltestellen-abdeckung': {
     name: 'stop_distance',
     title: "Haltestellen-Abdeckung",
+    category: 'public_transport',
     description: `
 Wie weit ist es bis zur nächsten ÖPNV-Haltestelle?
     `,
@@ -22,6 +23,7 @@ Wie weit ist es bis zur nächsten ÖPNV-Haltestelle?
   'pkw-dichte': {
     name: 'cars_per_resident',
     title: "PKW-Dichte",
+    category: 'car',
     description: `
 Wie viel PKW kommen auf eine*n Einwohner*in?
     `,
@@ -35,6 +37,7 @@ Wie viel PKW kommen auf eine*n Einwohner*in?
   radinfrastruktur: {
     name: 'bike_infrastructure',
     title: "Radinfrastruktur",
+    category: 'bicycle',
     description: `
 Wie viele Radwege und Radspuren gibt es
 im Verhältnis zu allen Wegen?

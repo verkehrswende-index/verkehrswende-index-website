@@ -1,4 +1,5 @@
 .index-table {
+  overflow-x: auto;
   th {
     i {
       font-size: 2rem;
@@ -13,4 +14,9 @@
   .analysis-score {
     width: 2.5em;
   }
+}
+
+.index-table-pagination {
+  display: flex;
+  flex-wrap: wrap;
 }

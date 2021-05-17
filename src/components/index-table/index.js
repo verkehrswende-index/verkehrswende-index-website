@@ -5,7 +5,7 @@ import Population from "../../components/population";
 import Trend from "../../components/trend";
 import Icon from "../../components/icon";
 import { Link } from "react-router-dom";
-import { useFilters, useTable, useSortBy } from 'react-table';
+import { usePagination, useFilters, useTable, useSortBy } from 'react-table';
 import { Table } from 'react-bootstrap';
 import Score from "../analysis/score.js";
 import "./style.scss";
@@ -74,17 +74,17 @@ const IndexTable = ({data}) => {
         Filter: DefaultColumnFilter,
         Cell: ({value, row}) => (
           <>
-          <Link to={`/gebiete/${row.original.slug}`}>
-          {value}
-          </Link><br/>
-          <small className="text-muted">
-          <Icon
-          name={`users`}
-          title={__( 'Einwohner*innen' )}
-          />
+            <Link to={`/gebiete/${row.original.slug}`}>
+              {value}
+            </Link><br/>
+            <small className="text-muted">
+              <Icon
+                name={`users`}
+                title={__( 'Einwohner*innen' )}
+              />
           &nbsp;
-            <span className="text-muted"><Population value={row.original.population}/></span>
-          </small>
+          <span className="text-muted"><Population value={row.original.population}/></span>
+            </small>
           </>
         ),
       },
@@ -142,57 +142,100 @@ const IndexTable = ({data}) => {
     getTableBodyProps,
     headerGroups,
     allColumns,
-    rows,
+    page,
     prepareRow,
-  } = useTable({ columns, data: tableData }, useFilters, useSortBy);
-   return (
-     <>
-     <p>{allColumns[2].render('Filter')}</p>
-     <Table {...getTableProps()} className="index-table">
-       <thead>
-         {// Loop over the header rows
-         headerGroups.map(headerGroup => (
-           // Apply the header row props
-           <tr {...headerGroup.getHeaderGroupProps()}>
-             {// Loop over the headers in each row
-             headerGroup.headers.map(column => (
-               // Apply the header cell props
-               <th {...column.getHeaderProps([{ style: column.style }, column.getSortByToggleProps()])} >
-                 {// Render the header
-                 column.render('Header')}
-                 <span>
-                   {column.isSorted
-                   ? column.isSortedDesc
-                   ? ' 🔽'
-                   : ' 🔼'
-                   : ''}
-                 </span>
-               </th>
-             ))}
-           </tr>
-         ))}
-       </thead>
-       <tbody {...getTableBodyProps()}>
-         {rows.map(row => {
-           prepareRow(row)
-           return (
-             <tr {...row.getRowProps()}>
-               {row.cells.map(cell => {
-                 return (
-                   <td
-                     {...cell.getCellProps()}
-                   >
-                     {cell.render('Cell')}
-                   </td>
-                 )
-               })}
-             </tr>
-           )
-         })}
-       </tbody>
-     </Table>
-     </>
-   )
+    canPreviousPage,
+    canNextPage,
+    pageOptions,
+    pageCount,
+    gotoPage,
+    nextPage,
+    previousPage,
+    setPageSize,
+    state: { pageIndex, pageSize },
+  } = useTable(
+    {
+      columns,
+      data: tableData,
+      initialState: { pageIndex: 0 },
+    },
+    useFilters,
+    useSortBy,
+    usePagination,
+  );
+  return (
+    <>
+      <p>{allColumns[2].render('Filter')}</p>
+      <div className="index-table">
+        <Table {...getTableProps()}>
+          <thead>
+            {// Loop over the header rows
+            headerGroups.map(headerGroup => (
+              // Apply the header row props
+              <tr {...headerGroup.getHeaderGroupProps()}>
+                {// Loop over the headers in each row
+                headerGroup.headers.map(column => (
+                  // Apply the header cell props
+                  <th {...column.getHeaderProps([{ style: column.style }, column.getSortByToggleProps()])} >
+                    {// Render the header
+                    column.render('Header')}
+                    <span>
+                      {column.isSorted
+                      ? column.isSortedDesc
+                      ? ' 🔽'
+                      : ' 🔼'
+                      : ''}
+                    </span>
+                  </th>
+                ))}
+              </tr>
+            ))}
+          </thead>
+          <tbody {...getTableBodyProps()}>
+            {page.map(row => {
+              prepareRow(row)
+              return (
+                <tr {...row.getRowProps()}>
+                  {row.cells.map(cell => {
+                    return (
+                      <td
+                        {...cell.getCellProps()}
+                      >
+                        {cell.render('Cell')}
+                      </td>
+                    )
+                  })}
+                </tr>
+              )
+            })}
+          </tbody>
+        </Table>
+      </div>
+      <ul className="index-table-pagination pagination mt-3">
+        <li className={"page-item " + (!canPreviousPage?"disabled":"")}>
+          <a className="page-link" href="#" onClick={(e) => { e.preventDefault(); previousPage();}}>
+            <span aria-hidden="true">&laquo;</span>
+            <span class="sr-only">{__("Vorherige Seite")}</span>
+          </a>
+        </li>
+    {
+      Array.from({length: pageOptions.length}, (v,i) => (
+        <li className={"page-item " + ((pageIndex === i)?"active":"")}>
+          <a className="page-link" href="#" onClick={(e) => { e.preventDefault(); gotoPage(i);}}>
+            {i+1}
+          </a>
+        </li>
+      ))
+    }
+        <li className={"page-item " + (!canNextPage?"disabled":"")}>
+          <a className="page-link" href="#" onClick={(e) => { e.preventDefault(); nextPage();}}>
+            <span aria-hidden="true">&raquo;</span>
+            <span class="sr-only">{__("Nächste Seite")}</span>
+          </a>
+        </li>
+      </ul>
+    </>
+  )
 
 };
 

@@ -1,0 +1,10 @@
+.analysis-previews {
+  display: flex;
+  flex-wrap: wrap;
+  & > * {
+    width: 27rem;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    padding-right: 2rem;
+  }
+}

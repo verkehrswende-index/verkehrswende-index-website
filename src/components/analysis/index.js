@@ -1,5 +1,6 @@
 import React, { button, useEffect, useState } from "react";
 import { Alert, Button, Row, Col } from "react-bootstrap";
+import {Link} from "react-router-dom";
 import Icon from "../icon";
 import Loading from "../loading";
 import Map from "./map.mjs";
@@ -9,7 +10,7 @@ import "./style.scss";
 
 import registeredAnalysis from './registered.js';
 
-const Analysis = ({ area, id, store, className }) => {
+const Analysis = ({areaId, areaConfig, id, store, className}) => {
   const config = registeredAnalysis[id];
 
   const [results, setResults] = useState(null);
@@ -25,7 +26,7 @@ const Analysis = ({ area, id, store, className }) => {
     fetch(
       store.config.dataPath +
         `areas/${encodeURIComponent(
-          area
+          areaId
         )}/analysis/${config.name}/features.json`
     )
       .then((response) => response.json())
@@ -39,7 +40,7 @@ const Analysis = ({ area, id, store, className }) => {
     fetch(
       store.config.dataPath +
         `areas/${encodeURIComponent(
-          area
+          areaId
         )}/analysis/${config.name}/results.json`
     )
       .then((response) => response.json())
@@ -50,7 +51,7 @@ const Analysis = ({ area, id, store, className }) => {
     fetch(
       store.config.dataPath +
         `areas/${encodeURIComponent(
-          area
+          areaId
         )}/analysis/${config.name}/results.1y.json`
     )
       .then((response) => response.json())
@@ -61,7 +62,11 @@ const Analysis = ({ area, id, store, className }) => {
 
   return (
     <div className={className}>
-      <h2>{config.title}</h2>
+      <h2>{config.title} in{' '}
+        <Link to={`/gebiete/${areaId}`}>
+          {areaConfig.name}
+        </Link>
+      </h2>
       <p>{config.description}</p>
       <Alert variant="warning">
         <Icon name="flask"/>&nbsp;

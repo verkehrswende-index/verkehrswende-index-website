@@ -14,9 +14,6 @@
     "bootstrap": "^4.6.0",
     "chroma-js": "^2.1.1",
     "font-awesome": "^4.7.0",
-    "i": "^0.3.6",
-    "npm": "^7.8.0",
-    "parcel": "^2.0.0-nightly.641",
     "react": "^17.0.2",
     "react-bootstrap": "^1.5.2",
     "react-circular-progressbar": "^2.0.4",
@@ -24,8 +21,7 @@
     "react-helmet": "^6.1.0",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
-    "react-table": "^7.6.3",
-    "serve-static": "^1.14.1"
+    "react-table": "^7.6.3"
   },
   "jest": {
     "preset": "jest-preset-preact",
@@ -39,7 +35,10 @@
     "eslint": "^7.24.0",
     "eslint-plugin-react": "^7.23.2",
     "jest": "^26.6.3",
+    "npm": "^7.8.0",
+    "parcel": "^2.0.0-nightly.641",
     "prettier": "2.2.1",
-    "sass": "^1.32.8"
+    "sass": "^1.32.8",
+    "serve-static": "^1.14.1"
   }
 }

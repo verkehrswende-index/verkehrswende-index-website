@@ -1,3 +1,5 @@
+@import "bootstrap/scss/bootstrap";
+
 .index-table {
   overflow-x: auto;
   th {
@@ -19,4 +21,33 @@
 .index-table-pagination {
   display: flex;
   flex-wrap: wrap;
+}
+
+.index-table-filters {
+  margin-top: 3rem;
+  margin-bottom: 2rem;
+  @include media-breakpoint-up(xl) {
+    display: flex;
+    flex-wrap: wrap;
+  }
+}
+
+.index-table-filters__population {
+  flex-grow: 1;
+  display: flex;
+  padding-right: 2rem;
+  margin-top: 1rem;
+  .icon {
+    font-size: 1.3rem;
+    padding: 0 1.5rem 0 0;
+  }
+  .rs-slider {
+    flex-grow: 1;
+  }
+  @include media-breakpoint-up(xl) {
+    margin-top: 0;
+    .icon {
+      padding-left: 2rem;
+    }
+  }
 }

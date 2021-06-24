@@ -21,7 +21,8 @@
     "react-helmet": "^6.1.0",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
-    "react-table": "^7.6.3"
+    "react-table": "^7.6.3",
+    "rsuite": "^5.0.0-alpha.9"
   },
   "jest": {
     "preset": "jest-preset-preact",
@@ -31,6 +32,12 @@
     ]
   },
   "devDependencies": {
+    "@babel/cli": "^7.14.5",
+    "@babel/core": "^7.14.6",
+    "@babel/plugin-transform-react-jsx": "^7.14.5",
+    "@babel/preset-env": "^7.14.7",
+    "@babel/preset-react": "^7.14.5",
+    "@parcel/transformer-less": "^2.0.0-nightly.731",
     "@parcel/transformer-sass": "^2.0.0-nightly.643",
     "eslint": "^7.24.0",
     "eslint-plugin-react": "^7.23.2",

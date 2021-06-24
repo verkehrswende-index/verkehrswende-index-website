@@ -9,8 +9,11 @@ import { usePagination, useFilters, useTable, useSortBy } from 'react-table';
 import { Table } from 'react-bootstrap';
 import Score from "../analysis/score.js";
 import "./style.scss";
+import { Slider } from 'rsuite';
+import { RangeSlider } from 'rsuite';
+import 'rsuite/dist/rsuite.css';
 
-function DefaultColumnFilter({
+function LocationFilter({
   column: { filterValue, preFilteredRows, setFilter },
 }) {
   const count = preFilteredRows.length;
@@ -24,6 +27,39 @@ function DefaultColumnFilter({
     />
   );
 }
+
+function PopulationFilter({
+  column: { filterValue, setFilter },
+}) {
+  return (
+    <div className="index-table-filters__population">
+      <Icon
+        name={`users`}
+        title={__( 'Einwohner*innen' )}
+      />
+      <RangeSlider
+        graduated
+        progress
+        value={filterValue||[0,4000000]}
+        min={0}
+        step={50000}
+        max={4000000}
+        renderMark={mark => {
+          if ([0,200000, 1000000, 2000000, 4000000].includes(mark)) {
+            if (mark >= 1000000) {
+              return <span>{mark/1000000} Mio.</span>;
+            } else if (mark >= 1000) {
+              return <span>{mark/1000} Tsd.</span>;
+            }
+            return 0;
+          }
+          return null;
+        }}
+        onChange={e => { setFilter( () => e ); }}
+      />
+    </div>
+  )
+};
 
 const IndexTable = ({data}) => {
   const tableData = React.useMemo(
@@ -71,7 +107,7 @@ const IndexTable = ({data}) => {
       {
         Header: <Icon name="map-signs" title={__("Ort")}/>,
         accessor: 'name',
-        Filter: DefaultColumnFilter,
+        Filter: LocationFilter,
         Cell: ({value, row}) => (
           <>
             <Link to={`/gebiete/${row.original.slug}`}>
@@ -89,6 +125,11 @@ const IndexTable = ({data}) => {
         ),
       },
       {
+        accessor: 'population',
+        Filter: PopulationFilter,
+        filter: 'between',
+      },
+      {
         Header: <Icon name="line-chart" title={__("Trend")}/>,
         disableFilters: true,
         Cell: ({value}) => <Trend increase={value}/>,
@@ -96,14 +137,6 @@ const IndexTable = ({data}) => {
         sortType: 'basic',
         style: { width: '8em' },
       },
-      /* {
-       *   Header: 'Einwohner*innnnen',
-       *   disableFilters: true,
-       *   accessor: 'population',
-       *   sortType: 'basic',
-       *   Cell: ({value}) => <Population value={value}/>,
-       *   style: { width: '7em' },
-       * }, */
       {
         Header: <Icon name="bicycle" title={__("Rad-Freundlichkeit")}/>,
         disableFilters: true,
@@ -157,7 +190,10 @@ const IndexTable = ({data}) => {
     {
       columns,
       data: tableData,
-      initialState: { pageIndex: 0 },
+      initialState: {
+        pageIndex: 0,
+        hiddenColumns: [ 'population' ],
+      },
     },
     useFilters,
     useSortBy,
@@ -165,7 +201,11 @@ const IndexTable = ({data}) => {
   );
   return (
     <>
-      <p>{allColumns[2].render('Filter')}</p>
+
+      <div className="index-table-filters">
+        {allColumns[2].render('Filter')}
+        {allColumns[3].render('Filter')}
+      </div>
       <div className="index-table">
         <Table {...getTableProps()}>
           <thead>

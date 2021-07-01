@@ -252,25 +252,25 @@ const IndexTable = ({data}) => {
         </Table>
       </div>
       <ul className="index-table-pagination pagination mt-3">
-        <li className={"page-item " + (!canPreviousPage?"disabled":"")}>
+        <li key="previous" className={"page-item " + (!canPreviousPage?"disabled":"")}>
           <a className="page-link" href="#" onClick={(e) => { e.preventDefault(); previousPage();}}>
             <span aria-hidden="true">&laquo;</span>
-            <span class="sr-only">{__("Vorherige Seite")}</span>
+            <span className="sr-only">{__("Vorherige Seite")}</span>
           </a>
         </li>
     {
       Array.from({length: pageOptions.length}, (v,i) => (
-        <li className={"page-item " + ((pageIndex === i)?"active":"")}>
+        <li key={i} className={"page-item " + ((pageIndex === i)?"active":"")}>
           <a className="page-link" href="#" onClick={(e) => { e.preventDefault(); gotoPage(i);}}>
             {i+1}
           </a>
         </li>
       ))
     }
-        <li className={"page-item " + (!canNextPage?"disabled":"")}>
+        <li key="next" className={"page-item " + (!canNextPage?"disabled":"")}>
           <a className="page-link" href="#" onClick={(e) => { e.preventDefault(); nextPage();}}>
             <span aria-hidden="true">&raquo;</span>
-            <span class="sr-only">{__("Nächste Seite")}</span>
+            <span className="sr-only">{__("Nächste Seite")}</span>
           </a>
         </li>
       </ul>

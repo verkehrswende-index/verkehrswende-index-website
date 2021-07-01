@@ -52,28 +52,26 @@ const Index = ({ store }) => {
           <Accordion.Collapse eventKey="0">
             <Card.Body className="index-help">
               <Card.Text>
-                <p>
-                  Für jede <Icon name="map-signs"/> Stadt werden verschiedene Analysen in den Kategorien <Icon name="bicycle"/> Fahrrad, <Icon name="ban-car"/> Auto und <Icon name="bus"/> ÖPNV durchgeführt. Das Ergebnis ist jeweils eine Punktzahl zwischen <Score score={0}/> und <Score score="1"/>.
-                </p>
-                <p>
-                  Aus den einzelnen Punktzahlen der Analysen werden dann die Gesamtpunktzahlen der Katogieren (<Icon name="bicycle"/> <Icon name="ban-car"/> <Icon name="bus"/>) berechnet. Die einzelnen Analysen fließen dabei unterschiedlich stark in die Gesamtpunktzahl der Kategorie ein.
-                </p>
-                <p>
-                  Die <Icon name="trophy"/> Gesamtpunktzahl der Stadt wird wiederum aus den unterschiedlich stark einfließenden Gesamtpunktzahlen der Kategorien (<Icon name="bicycle"/> <Icon name="ban-car"/> <Icon name="bus"/>) berechnet.
-                </p>
-                <p>
-                  Die <Icon name="hashtag"/> Position ergibt sich aus den <Icon name="trophy"/> Gesamtpunktzahlen. Auf Platz 1 ist die Stadt mit der höchsten Gesamtpunktzahl.
-                </p>
-                <p>
-                  Die <Icon name="line-chart"/> Trends geben an, wie sich die <Icon name="trophy"/> Gesampunktzahl innerhalb eines Jahres geändert hat.
-                </p>
-                <p>
-                  Als Vergleich werden zudem einige weitere euopäische Städte untersucht.
-                </p>
-                <p>
-                  Durch Klick auf das jeweilige Spalten-Icon kann die <strong>Sortierung</strong> verändert werden.<br/>
-                  <strong>Detaillierte Informationen</strong> erhält man durch einen Kick auf den Stadtnamen.
-                </p>
+                Für jede <Icon name="map-signs"/> Stadt werden verschiedene Analysen in den Kategorien <Icon name="bicycle"/> Fahrrad, <Icon name="ban-car"/> Auto und <Icon name="bus"/> ÖPNV durchgeführt. Das Ergebnis ist jeweils eine Punktzahl zwischen .
+              </Card.Text>
+              <Card.Text>
+                Aus den einzelnen Punktzahlen der Analysen werden dann die Gesamtpunktzahlen der Katogieren (<Icon name="bicycle"/> <Icon name="ban-car"/> <Icon name="bus"/>) berechnet. Die einzelnen Analysen fließen dabei unterschiedlich stark in die Gesamtpunktzahl der Kategorie ein.
+              </Card.Text>
+              <Card.Text>
+                Die <Icon name="trophy"/> Gesamtpunktzahl der Stadt wird wiederum aus den unterschiedlich stark einfließenden Gesamtpunktzahlen der Kategorien (<Icon name="bicycle"/> <Icon name="ban-car"/> <Icon name="bus"/>) berechnet.
+              </Card.Text>
+              <Card.Text>
+                Die <Icon name="hashtag"/> Position ergibt sich aus den <Icon name="trophy"/> Gesamtpunktzahlen. Auf Platz 1 ist die Stadt mit der höchsten Gesamtpunktzahl.
+              </Card.Text>
+              <Card.Text>
+                Die <Icon name="line-chart"/> Trends geben an, wie sich die <Icon name="trophy"/> Gesampunktzahl innerhalb eines Jahres geändert hat.
+              </Card.Text>
+              <Card.Text>
+                Als Vergleich werden zudem einige weitere euopäische Städte untersucht.
+              </Card.Text>
+              <Card.Text>
+                Durch Klick auf das jeweilige Spalten-Icon kann die <strong>Sortierung</strong> verändert werden.<br/>
+                <strong>Detaillierte Informationen</strong> erhält man durch einen Kick auf den Stadtnamen.
               </Card.Text>
             </Card.Body>
           </Accordion.Collapse>

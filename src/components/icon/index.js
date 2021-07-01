@@ -13,11 +13,11 @@ export default function Icon({ name, title }) {
     icon = <i className={`fa fa-${name}`} title={title} aria-hidden="true"></i>;
   }
   return (
-    <div className="icon">
+    <span className="icon">
       { title &&
         <span className="sr-only">{title}</span>
       }
       { icon }
-    </div>
+    </span>
   );
 }

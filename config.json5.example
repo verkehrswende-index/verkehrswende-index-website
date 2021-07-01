@@ -1,0 +1,5 @@
+{
+  // URI to the analysis data.
+  dataURI: '/data/',
+  // dataURI: "http://localhost:3000/",
+}

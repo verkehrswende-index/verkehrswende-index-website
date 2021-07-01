@@ -14,11 +14,9 @@ import About from "../routes/about";
 import Area from "../routes/area";
 import Contact from "../routes/contact";
 
+import config from "../../config.json5";
 var store = {
-  config: {
-    'dataPath': '/data/',
-    // dataPath: "http://localhost:3000/",
-  },
+  config
 };
 
 const App = () => (

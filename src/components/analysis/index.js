@@ -24,7 +24,7 @@ const Analysis = ({areaId, areaConfig, id, store, className}) => {
     setMapShown(true);
     var map = new Map(`map-${id}`, config.map);
     fetch(
-      store.config.dataPath +
+      store.config.dataURI +
         `areas/${encodeURIComponent(
           areaId
         )}/analysis/${config.name}/features.json`
@@ -38,7 +38,7 @@ const Analysis = ({areaId, areaConfig, id, store, className}) => {
 
   useEffect(() => {
     fetch(
-      store.config.dataPath +
+      store.config.dataURI +
         `areas/${encodeURIComponent(
           areaId
         )}/analysis/${config.name}/results.json`
@@ -49,7 +49,7 @@ const Analysis = ({areaId, areaConfig, id, store, className}) => {
       });
 
     fetch(
-      store.config.dataPath +
+      store.config.dataURI +
         `areas/${encodeURIComponent(
           areaId
         )}/analysis/${config.name}/results.1y.json`

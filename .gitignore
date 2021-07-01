@@ -4,3 +4,4 @@ node_modules
 /*.log
 /.cache
 /.parcel-cache
+/config.json5

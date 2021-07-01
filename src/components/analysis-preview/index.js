@@ -14,7 +14,7 @@ export default function AnalysisPreview({ area, id, store}) {
 
   useEffect(() => {
     fetch(
-      store.config.dataPath +
+      store.config.dataURI +
         `areas/${encodeURIComponent(
           area
         )}/analysis/${config.name}/results.json`
@@ -25,7 +25,7 @@ export default function AnalysisPreview({ area, id, store}) {
       });
 
     fetch(
-      store.config.dataPath +
+      store.config.dataURI +
         `areas/${encodeURIComponent(
           area
         )}/analysis/${config.name}/results.1y.json`

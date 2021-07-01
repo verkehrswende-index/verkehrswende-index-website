@@ -17,7 +17,7 @@ const Area = ({ store }) => {
 
   useEffect(() => {
     fetch(
-      store.config.dataPath + `areas/${encodeURIComponent(area)}/config.json`
+      store.config.dataURI + `areas/${encodeURIComponent(area)}/config.json`
     )
       .then((response) => response.json())
       .then((json) => {

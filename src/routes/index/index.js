@@ -15,7 +15,7 @@ const Index = ({ store }) => {
   const [data, setData] = useState(null);
 
   useEffect(() => {
-    fetch(store.config.dataPath + "index.json")
+    fetch(store.config.dataURI + "index.json")
       .then((response) => response.json())
       .then((json) => {
         setData(json);

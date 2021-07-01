@@ -9,9 +9,6 @@ import { usePagination, useFilters, useTable, useSortBy } from 'react-table';
 import { Table } from 'react-bootstrap';
 import Score from "../analysis/score.js";
 import "./style.scss";
-import { Slider } from 'rsuite';
-import { RangeSlider } from 'rsuite';
-import 'rsuite/dist/rsuite.css';
 
 function LocationFilter({
   column: { filterValue, preFilteredRows, setFilter },
@@ -31,32 +28,27 @@ function LocationFilter({
 function PopulationFilter({
   column: { filterValue, setFilter },
 }) {
+  const selectValue = JSON.stringify(filterValue);
   return (
     <div className="index-table-filters__population">
       <Icon
         name={`users`}
         title={__( 'Einwohner*innen' )}
       />
-      <RangeSlider
-        graduated
-        progress
-        value={filterValue||[0,4000000]}
-        min={0}
-        step={50000}
-        max={4000000}
-        renderMark={mark => {
-          if ([0,200000, 1000000, 2000000, 4000000].includes(mark)) {
-            if (mark >= 1000000) {
-              return <span>{mark/1000000} Mio.</span>;
-            } else if (mark >= 1000) {
-              return <span>{mark/1000} Tsd.</span>;
-            }
-            return 0;
-          }
-          return null;
-        }}
-        onChange={e => { setFilter( () => e ); }}
-      />
+      <div>
+        <select
+          value={selectValue||"[0,10000000]"}
+          onChange={e => { setFilter( () => JSON.parse( e.target.value ) ); }}
+        >
+          <option value="[0,10000000]">Alle Einwohner*innenzahlen</option>
+          <option value="[0,20000]">&lt; 20 Tausend</option>
+          <option value="[20000,50000]">20 - 50 Tausend</option>
+          <option value="[50000,100000]">50 - 100 Tausend</option>
+          <option value="[100000,200000]">100 - 200 Tausend</option>
+          <option value="[200000,500000]">200 - 500 Tausend</option>
+          <option value="[500000,10000000]">&gt; 500 Tausend</option>
+        </select>
+      </div>
     </div>
   )
 };

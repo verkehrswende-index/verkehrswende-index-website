@@ -21,8 +21,7 @@
     "react-helmet": "^6.1.0",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
-    "react-table": "^7.6.3",
-    "rsuite": "^5.0.0-alpha.9"
+    "react-table": "^7.6.3"
   },
   "jest": {
     "preset": "jest-preset-preact",

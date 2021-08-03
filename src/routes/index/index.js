@@ -52,7 +52,7 @@ const Index = ({ store }) => {
           <Accordion.Collapse eventKey="0">
             <Card.Body className="index-help">
               <Card.Text>
-                Für jede <Icon name="map-signs"/> Stadt werden verschiedene Analysen in den Kategorien <Icon name="bicycle"/> Fahrrad, <Icon name="ban-car"/> Auto und <Icon name="bus"/> ÖPNV durchgeführt. Das Ergebnis ist jeweils eine Punktzahl zwischen .
+                Für jede <Icon name="map-signs"/> Stadt werden verschiedene Analysen in den Kategorien <Icon name="bicycle"/> Fahrrad, <Icon name="ban-car"/> Auto und <Icon name="bus"/> ÖPNV durchgeführt. Das Ergebnis ist jeweils eine Punktzahl zwischen 0 und 100.
               </Card.Text>
               <Card.Text>
                 Aus den einzelnen Punktzahlen der Analysen werden dann die Gesamtpunktzahlen der Katogieren (<Icon name="bicycle"/> <Icon name="ban-car"/> <Icon name="bus"/>) berechnet. Die einzelnen Analysen fließen dabei unterschiedlich stark in die Gesamtpunktzahl der Kategorie ein.

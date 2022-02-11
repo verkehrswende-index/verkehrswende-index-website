@@ -1,0 +1,27 @@
+@import "bootstrap/scss/functions";
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/mixins/breakpoints";
+
+.analysis-preview {
+  :global(.analysis-score) {
+    width: 7rem;
+  }
+  h3 {
+    font-size: 1.3rem;
+  }
+}
+
+@include media-breakpoint-up(sm) {
+  .analysis-preview {
+    display: flex;
+    align-items: center;
+    :global(.analysis-score) {
+      width: 7rem;
+      margin-right: 1rem;
+      order: 0;
+    }
+    h3 {
+      order: 1;
+    }
+  }
+}

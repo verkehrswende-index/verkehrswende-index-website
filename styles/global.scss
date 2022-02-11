@@ -1,0 +1,23 @@
+@import "bootstrap/scss/bootstrap";
+@import "font-awesome/scss/font-awesome";
+
+.noscript {
+  text-align: center;
+  font-size: 1.2rem;
+  margin-top: 2rem;
+}
+
+
+.value__relative--increase,
+.value__relative--decrease.value--lower-is-better {
+  color: rgb(60, 118, 61);
+}
+
+.value__relative--constant {
+  color: rgb(138, 109, 59);
+}
+
+.value__relative--decrease,
+.value__relative--increase.value--lower-is-better {
+  color: rgb(169, 68, 66);
+}

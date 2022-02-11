@@ -4,23 +4,26 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "build": "parcel ${PARCEL_BUILD_COMMAND:-build} src/index.html",
-    "dev": "PARCEL_BUILD_COMMAND=serve npm run build",
-    "lint": "eslint src",
+    "build": "next build",
+    "export": "next export",
+    "postbuild": "next-sitemap",
+    "dev": "next dev",
+    "start": "next start",
+    "lint": "next lint",
     "test": "nodejs --experimental-vm-modules node_modules/.bin/jest --config=src/jest.config.js",
     "prettify": "prettier --write src"
   },
   "dependencies": {
     "bootstrap": "^4.6.0",
     "chroma-js": "^2.1.1",
+    "classnames": "^2.3.1",
     "font-awesome": "^4.7.0",
-    "react": "^17.0.2",
+    "leaflet": "^1.7.1",
+    "next": "^12.0.10",
+    "next-sitemap": "^2.1.13",
     "react-bootstrap": "^1.5.2",
     "react-circular-progressbar": "^2.0.4",
     "react-dom": "^17.0.2",
-    "react-helmet": "^6.1.0",
-    "react-router": "^5.2.0",
-    "react-router-dom": "^5.2.0",
     "react-table": "^7.6.3"
   },
   "jest": {
@@ -31,20 +34,6 @@
     ]
   },
   "devDependencies": {
-    "@babel/cli": "^7.14.5",
-    "@babel/core": "^7.14.6",
-    "@babel/plugin-transform-react-jsx": "^7.14.5",
-    "@babel/preset-env": "^7.14.7",
-    "@babel/preset-react": "^7.14.5",
-    "@parcel/transformer-less": "^2.0.0-nightly.731",
-    "@parcel/transformer-sass": "^2.0.0-nightly.643",
-    "eslint": "^7.24.0",
-    "eslint-plugin-react": "^7.23.2",
-    "jest": "^26.6.3",
-    "npm": "^7.8.0",
-    "parcel": "^2.0.0-nightly.641",
-    "prettier": "2.2.1",
-    "sass": "^1.32.8",
-    "serve-static": "^1.14.1"
+    "json5-loader": "^4.0.1"
   }
 }

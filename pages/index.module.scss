@@ -1,0 +1,37 @@
+@import "bootstrap/scss/functions";
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/mixins/breakpoints";
+
+.teaser1 {
+  color: #2C89A0;
+  margin: 3rem 0;
+  max-width: 40rem;
+  font-size: 2.3rem;
+  line-height: 2.3rem;
+  @include media-breakpoint-up(sm) {
+    font-size: 4rem;
+    line-height: 4rem;
+  }
+}
+
+.teaser2 {
+  color: #2C89A0;
+  font-size: 2rem;
+  line-height: 2rem;
+  margin: 0rem 0 4rem;
+}
+
+.teaser3 {
+  color: #89a02c;
+  font-size: 2rem;
+  line-height: 2rem;
+  margin: 3rem 0 1rem;
+}
+
+.teaser4 {
+  font-weight:bold;
+  font-size: 1.5rem;
+  &, a {
+    color: #89a02c;
+  }
+}

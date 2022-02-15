@@ -5,3 +5,6 @@ node_modules
 /.cache
 /.parcel-cache
 /config.json5
+/out
+/public
+/.next

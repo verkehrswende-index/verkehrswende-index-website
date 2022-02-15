@@ -1,9 +1,9 @@
-import Head from 'next/head';
-import Link from 'next/link';
+import Head from "next/head";
+import Link from "next/link";
 import { Row, Col } from "react-bootstrap";
 import Icon from "../components/icon";
 import styles from "./index.module.scss";
-import Layout, { siteTitle } from '../components/layout';
+import Layout, { siteTitle } from "../components/layout";
 
 const About = () => (
   <Layout>
@@ -13,7 +13,8 @@ const About = () => (
     <Row>
       <Col>
         <p className={styles.teaser3}>
-          Für mehr <strong>Lebensqualität</strong> und <strong>klimaschonende</strong> Mobilität:
+          Für mehr <strong>Lebensqualität</strong> und{" "}
+          <strong>klimaschonende</strong> Mobilität:
         </p>
       </Col>
     </Row>
@@ -34,13 +35,14 @@ const About = () => (
     <Row>
       <Col md={4}>
         <p>
-          Das Projekt <strong>Verkehrswende-Index</strong> untersucht und vergleicht den
-          Stand der Verkehrswende in deutschen Städten.
+          Das Projekt <strong>Verkehrswende-Index</strong> untersucht und
+          vergleicht den Stand der Verkehrswende in deutschen Städten.
         </p>
       </Col>
       <Col md={4}>
         <p className={styles.teaser4}>
-          <Icon name="arrow-right"/>&nbsp;
+          <Icon name="arrow-right" />
+          &nbsp;
           <Link href="/uebersicht">Zu den Ergebnissen</Link>
         </p>
       </Col>

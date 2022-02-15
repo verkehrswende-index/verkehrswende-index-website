@@ -16,22 +16,17 @@ export default function Value({ config, value, oldValue }) {
   const valueOnly = (
     <>
       <strong>{config.title}</strong>:{" "}
-    {
-      (config.unit == "m"
-     ? Math.round(value / 1000) + " km"
-     : Math.round(value*1000)/1000 + ( config.unit ? ' ' + config.unit : '' ) )
-    }
-    &nbsp;
-    {trend}
+      {config.unit == "m"
+        ? Math.round(value / 1000) + " km"
+        : Math.round(value * 1000) / 1000 +
+          (config.unit ? " " + config.unit : "")}
+      &nbsp;
+      {trend}
     </>
   );
 
   if (config.description === undefined) {
-    return (
-      <span>
-        {valueOnly}
-      </span>
-    );
+    return <span>{valueOnly}</span>;
   }
 
   const renderTooltip = (props) => (

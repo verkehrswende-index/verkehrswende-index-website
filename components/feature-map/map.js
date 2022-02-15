@@ -1,13 +1,13 @@
 import chroma from "chroma-js";
 import getBoundingBox from "../../lib/geo/get-bounding-box.js";
-import L from 'leaflet';
+import L from "leaflet";
 import "../../../../Leaflet.VectorGrid/dist/Leaflet.VectorGrid.bundled.min.js";
-import 'leaflet/dist/leaflet.css';
+import "leaflet/dist/leaflet.css";
 
 export default class Map {
   constructor(mapid, mapSettings) {
     this.mapSettings = mapSettings;
-    this.colorScale = chroma.scale('Spectral');
+    this.colorScale = chroma.scale("Spectral");
     this.unknownColor = "#FF00FF";
     var options = {
       minZoom: 10,
@@ -33,13 +33,16 @@ export default class Map {
   }
 
   addColorLegend() {
-    const legend = L.control({position: 'bottomright'});
+    const legend = L.control({ position: "bottomright" });
     legend.onAdd = (map) => {
-      var div = L.DomUtil.create('div', 'feature-map__info feature-map__score-legend');
+      var div = L.DomUtil.create(
+        "div",
+        "feature-map__info feature-map__score-legend"
+      );
       var inner = "Punkte:<br><span>0</span>";
       inner += '<i style="width: 100px; background: linear-gradient(to right';
       for (var i = 0; i <= 1.0; i = i + 0.1) {
-        inner += ',' + this.colorScale(i).hex();
+        inner += "," + this.colorScale(i).hex();
       }
       inner += ')"></i><span>100</span><br>';
       inner += `<i style="width: 10px; background: ${this.unknownColor}"></i> `;
@@ -50,14 +53,14 @@ export default class Map {
     legend.addTo(this.map);
   }
 
-  getFeatureStyle({properties, zoom, dimension}, highlighted = false) {
+  getFeatureStyle({ properties, zoom, dimension }, highlighted = false) {
     return {
-      weight: highlighted ? 10 : ( dimension === 1 ? 3 : 5 ),
+      weight: highlighted ? 10 : dimension === 1 ? 3 : 5,
       opacity: 0.8,
       color: highlighted
-           ? "#0000FF"
-           : properties.score > 0
-          ? this.colorScale(properties.score).hex()
+        ? "#0000FF"
+        : properties.score > 0
+        ? this.colorScale(properties.score).hex()
         : this.unknownColor,
     };
   }
@@ -84,7 +87,7 @@ export default class Map {
   }
 
   clearFeatures() {
-    console.log('clear!', this.map, this.featureLayer);
+    console.log("clear!", this.map, this.featureLayer);
     if (this.featureLayer) {
       this.map.removeLayer(this.featureLayer);
     }
@@ -108,7 +111,7 @@ export default class Map {
         rendererFactory: L.canvas.tile,
         vectorTileLayerStyles: {
           sliced: (properties, zoom, dimension) =>
-          this.getFeatureStyle({ properties, zoom, dimension}),
+            this.getFeatureStyle({ properties, zoom, dimension }),
         },
         interactive: true,
         getFeatureId: function (f) {
@@ -152,7 +155,7 @@ export default class Map {
 
     /* this.map.on('click', clearHighlight); */
 
-    if ( geoJSON.features.length > 0 ) {
+    if (geoJSON.features.length > 0) {
       const bbox = getBoundingBox(geoJSON.features);
       this.map.fitBounds([
         [bbox.yMin, bbox.xMin],

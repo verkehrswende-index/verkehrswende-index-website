@@ -1,10 +1,10 @@
-import Head from 'next/head';
-import Layout, { siteTitle } from '../components/layout';
+import Head from "next/head";
+import Layout, { siteTitle } from "../components/layout";
 
 const Home = () => (
   <Layout>
     <Head>
-      <title>{siteTitle('Über das Projekt')}</title>
+      <title>{siteTitle("Über das Projekt")}</title>
     </Head>
 
     <p>

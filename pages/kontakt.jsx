@@ -1,10 +1,10 @@
-import Head from 'next/head';
-import Layout, { siteTitle } from '../components/layout';
+import Head from "next/head";
+import Layout, { siteTitle } from "../components/layout";
 
 const Contact = () => (
   <Layout>
     <Head>
-      <title>{siteTitle('Kontakt')}</title>
+      <title>{siteTitle("Kontakt")}</title>
     </Head>
     <h1>Kontakt</h1>
 

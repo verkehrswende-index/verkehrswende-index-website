@@ -4,7 +4,7 @@ export default function Loading() {
   return (
     <div className="loading">
       <p>Lade Daten...</p>
-      <ul className={styles['loading-wheel']}>
+      <ul className={styles["loading-wheel"]}>
         <li></li>
         <li></li>
         <li></li>

@@ -1,15 +1,15 @@
-const __ = (x,y) => x;
+const __ = (x, y) => x;
 
 import React from "react";
 import Population from "../../components/population";
 import Trend from "../../components/trend";
 import Icon from "../../components/icon";
 import Link from "next/link";
-import { usePagination, useFilters, useTable, useSortBy } from 'react-table';
-import { Table } from 'react-bootstrap';
+import { usePagination, useFilters, useTable, useSortBy } from "react-table";
+import { Table } from "react-bootstrap";
 import Score from "../analysis/score.js";
 import styles from "./style.module.scss";
-import cn from 'classnames';
+import cn from "classnames";
 
 function LocationFilter({
   column: { filterValue, preFilteredRows, setFilter },
@@ -17,29 +17,26 @@ function LocationFilter({
   const count = preFilteredRows.length;
   return (
     <input
-      value={filterValue || ''}
-      onChange={e => {
-        setFilter(e.target.value || undefined) // Set undefined to remove the filter entirely
+      value={filterValue || ""}
+      onChange={(e) => {
+        setFilter(e.target.value || undefined); // Set undefined to remove the filter entirely
       }}
       placeholder={`Durchsuche ${count} Orte...`}
     />
   );
 }
 
-function PopulationFilter({
-  column: { filterValue, setFilter },
-}) {
+function PopulationFilter({ column: { filterValue, setFilter } }) {
   const selectValue = JSON.stringify(filterValue);
   return (
-    <div className={styles['index-table-filters__population']}>
-      <Icon
-        name={`users`}
-        title={__( 'Einwohner*innen' )}
-      />
+    <div className={styles["index-table-filters__population"]}>
+      <Icon name={`users`} title={__("Einwohner*innen")} />
       <div>
         <select
-          value={selectValue||"[0,10000000]"}
-          onChange={e => { setFilter( () => JSON.parse( e.target.value ) ); }}
+          value={selectValue || "[0,10000000]"}
+          onChange={(e) => {
+            setFilter(() => JSON.parse(e.target.value));
+          }}
         >
           <option value="[0,10000000]">Alle Einwohner*innenzahlen</option>
           <option value="[0,20000]">&lt; 20 Tausend</option>
@@ -51,108 +48,103 @@ function PopulationFilter({
         </select>
       </div>
     </div>
-  )
+  );
 }
 
-const IndexTable = ({data}) => {
-  const tableData = React.useMemo(
-    () => {
-      if ( ! data ) {
-        return [];
+const IndexTable = ({ data }) => {
+  const tableData = React.useMemo(() => {
+    if (!data) {
+      return [];
+    }
+    var position = 0;
+    return data.areas.map((area) => {
+      const isInternational = "international" in area;
+      if (!isInternational) {
+        position += 1;
       }
-      var position = 0;
-      return data.areas.map((area) => {
-        const isInternational = 'international' in area;
-        if ( ! isInternational ) {
-          position += 1;
-        }
-        return {
-          index: isInternational ? null : position,
-          name: area.name,
-          slug: area.slug,
-          population: area.population,
-          scores: area.scores,
-          score: area.score,
-          trend: area.score / area.score1Y - 1,
-          mayorParty: area.mayorParty,
-        };
-      });
-    },
-    [data]
-  );
+      return {
+        index: isInternational ? null : position,
+        name: area.name,
+        slug: area.slug,
+        population: area.population,
+        scores: area.scores,
+        score: area.score,
+        trend: area.score / area.score1Y - 1,
+        mayorParty: area.mayorParty,
+      };
+    });
+  }, [data]);
   const columns = React.useMemo(
     () => [
       {
-        Header: <Icon name="hashtag" title={__("Position")}/>,
+        Header: <Icon name="hashtag" title={__("Position")} />,
         disableFilters: true,
-        accessor: 'index',
-        sortType: 'basic',
-        style: { width: '0em' },
+        accessor: "index",
+        sortType: "basic",
+        style: { width: "0em" },
       },
       {
-        Header: <Icon name="trophy" title={__("Gesamtpunkte")}/>,
+        Header: <Icon name="trophy" title={__("Gesamtpunkte")} />,
         disableFilters: true,
-        Cell: ({value}) => <Score score={value}/>,
-        accessor: 'score',
-        sortType: 'basic',
-        style: { width: '5em' },
+        Cell: ({ value }) => <Score score={value} />,
+        accessor: "score",
+        sortType: "basic",
+        style: { width: "5em" },
       },
       {
-        Header: <Icon name="map-signs" title={__("Ort")}/>,
-        accessor: 'name',
+        Header: <Icon name="map-signs" title={__("Ort")} />,
+        accessor: "name",
         Filter: LocationFilter,
-        Cell: ({value, row}) => (
+        Cell: ({ value, row }) => (
           <>
-            <Link href={`/gebiete/${row.original.slug}`}>
-              {value}
-            </Link><br/>
+            <Link href={`/gebiete/${row.original.slug}`}>{value}</Link>
+            <br />
             <small className="text-muted">
-              <Icon
-                name={`users`}
-                title={__( 'Einwohner*innen' )}
-              />
-          &nbsp;
-          <span className="text-muted"><Population value={row.original.population}/></span>
+              <Icon name={`users`} title={__("Einwohner*innen")} />
+              &nbsp;
+              <span className="text-muted">
+                <Population value={row.original.population} />
+              </span>
             </small>
           </>
         ),
       },
       {
-        accessor: 'population',
+        accessor: "population",
         Filter: PopulationFilter,
-        filter: 'between',
+        filter: "between",
       },
       {
-        Header: <Icon name="line-chart" title={__("Trend")}/>,
+        Header: <Icon name="line-chart" title={__("Trend")} />,
         disableFilters: true,
-        Cell: ({value}) => <Trend increase={value}/>,
-        accessor: 'trend',
-        sortType: 'basic',
-        style: { width: '8em' },
+        Cell: ({ value }) => <Trend increase={value} />,
+        accessor: "trend",
+        sortType: "basic",
+        style: { width: "8em" },
       },
       {
-        Header: <Icon name="bicycle" title={__("Rad-Freundlichkeit")}/>,
+        Header: <Icon name="bicycle" title={__("Rad-Freundlichkeit")} />,
         disableFilters: true,
-        Cell: ({value}) => <Score score={value}/>,
-        accessor: 'scores.bike_infrastructure.score',
-        sortType: 'basic',
-        style: { width: '7em' },
+        Cell: ({ value }) => <Score score={value} />,
+        accessor: "scores.bike_infrastructure.score",
+        sortType: "basic",
+        style: { width: "7em" },
       },
       {
-        Header: <Icon name="bus" title={__("ÖPNV-Angebot")}/>,
+        Header: <Icon name="bus" title={__("ÖPNV-Angebot")} />,
         disableFilters: true,
-        Cell: ({value}) => <Score score={value}/>,
-        accessor: 'scores.stop_distance.score',
-        sortType: 'basic',
-        style: { width: '7em' },
+        Cell: ({ value }) => <Score score={value} />,
+        accessor: "scores.stop_distance.score",
+        sortType: "basic",
+        style: { width: "7em" },
       },
       {
-        Header: <Icon name="ban-car" title={__("Auto-Verdrängung")}/>,
+        Header: <Icon name="ban-car" title={__("Auto-Verdrängung")} />,
         disableFilters: true,
-        Cell: ({value}) => (value !== null ? <Score score={value}/> : ''),
-        accessor: 'scores.cars_per_resident.score',
-        sortType: 'basic',
-        style: { width: '7em' },
+        Cell: ({ value }) => (value !== null ? <Score score={value} /> : ""),
+        accessor: "scores.cars_per_resident.score",
+        sortType: "basic",
+        style: { width: "7em" },
       },
       /* {
        *   Header: 'Bürgermeister*in',
@@ -185,91 +177,126 @@ const IndexTable = ({data}) => {
       data: tableData,
       initialState: {
         pageIndex: 0,
-        hiddenColumns: [ 'population' ],
+        hiddenColumns: ["population"],
       },
     },
     useFilters,
     useSortBy,
-    usePagination,
+    usePagination
   );
   return (
     <>
-
-      <div className={styles['index-table-filters']}>
-        {allColumns[2].render('Filter')}
-        {allColumns[3].render('Filter')}
+      <div className={styles["index-table-filters"]}>
+        {allColumns[2].render("Filter")}
+        {allColumns[3].render("Filter")}
       </div>
-      <div className={styles['index-table']}>
+      <div className={styles["index-table"]}>
         <Table {...getTableProps()}>
           <thead>
-            {// Loop over the header rows
-            headerGroups.map(headerGroup => (
-              // Apply the header row props
-              <tr {...headerGroup.getHeaderGroupProps()}>
-                {// Loop over the headers in each row
-                headerGroup.headers.map(column => (
-                  // Apply the header cell props
-                  <th {...column.getHeaderProps([{ style: column.style }, column.getSortByToggleProps()])} >
-                    {// Render the header
-                    column.render('Header')}
-                    <span>
-                      {column.isSorted
-                      ? column.isSortedDesc
-                      ? ' 🔽'
-                      : ' 🔼'
-                      : ''}
-                    </span>
-                  </th>
-                ))}
-              </tr>
-            ))}
+            {
+              // Loop over the header rows
+              headerGroups.map((headerGroup) => (
+                // Apply the header row props
+                <tr {...headerGroup.getHeaderGroupProps()}>
+                  {
+                    // Loop over the headers in each row
+                    headerGroup.headers.map((column) => (
+                      // Apply the header cell props
+                      <th
+                        {...column.getHeaderProps([
+                          { style: column.style },
+                          column.getSortByToggleProps(),
+                        ])}
+                      >
+                        {
+                          // Render the header
+                          column.render("Header")
+                        }
+                        <span>
+                          {column.isSorted
+                            ? column.isSortedDesc
+                              ? " 🔽"
+                              : " 🔼"
+                            : ""}
+                        </span>
+                      </th>
+                    ))
+                  }
+                </tr>
+              ))
+            }
           </thead>
           <tbody {...getTableBodyProps()}>
-            {page.map(row => {
-              prepareRow(row)
+            {page.map((row) => {
+              prepareRow(row);
               return (
                 <tr {...row.getRowProps()}>
-                  {row.cells.map(cell => {
+                  {row.cells.map((cell) => {
                     return (
-                      <td
-                        {...cell.getCellProps()}
-                      >
-                        {cell.render('Cell')}
-                      </td>
-                    )
+                      <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                    );
                   })}
                 </tr>
-              )
+              );
             })}
           </tbody>
         </Table>
       </div>
-      <ul className={cn(styles['index-table-pagination'], 'pagination', 'mt-3')}>
-        <li key="previous" className={"page-item " + (!canPreviousPage?"disabled":"")}>
-          <a className="page-link" href="#" onClick={(e) => { e.preventDefault(); previousPage();}}>
+      <ul
+        className={cn(styles["index-table-pagination"], "pagination", "mt-3")}
+      >
+        <li
+          key="previous"
+          className={"page-item " + (!canPreviousPage ? "disabled" : "")}
+        >
+          <a
+            className="page-link"
+            href="#"
+            onClick={(e) => {
+              e.preventDefault();
+              previousPage();
+            }}
+          >
             <span aria-hidden="true">&laquo;</span>
             <span className="sr-only">{__("Vorherige Seite")}</span>
           </a>
         </li>
-    {
-      Array.from({length: pageOptions.length}, (v,i) => (
-        <li key={i} className={"page-item " + ((pageIndex === i)?"active":"")}>
-          <a className="page-link" href="#" onClick={(e) => { e.preventDefault(); gotoPage(i);}}>
-            {i+1}
-          </a>
-        </li>
-      ))
-    }
-        <li key="next" className={"page-item " + (!canNextPage?"disabled":"")}>
-          <a className="page-link" href="#" onClick={(e) => { e.preventDefault(); nextPage();}}>
+        {Array.from({ length: pageOptions.length }, (v, i) => (
+          <li
+            key={i}
+            className={"page-item " + (pageIndex === i ? "active" : "")}
+          >
+            <a
+              className="page-link"
+              href="#"
+              onClick={(e) => {
+                e.preventDefault();
+                gotoPage(i);
+              }}
+            >
+              {i + 1}
+            </a>
+          </li>
+        ))}
+        <li
+          key="next"
+          className={"page-item " + (!canNextPage ? "disabled" : "")}
+        >
+          <a
+            className="page-link"
+            href="#"
+            onClick={(e) => {
+              e.preventDefault();
+              nextPage();
+            }}
+          >
             <span aria-hidden="true">&raquo;</span>
             <span className="sr-only">{__("Nächste Seite")}</span>
           </a>
         </li>
       </ul>
     </>
-  )
-
+  );
 };
 
 export default IndexTable;

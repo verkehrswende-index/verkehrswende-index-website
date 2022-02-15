@@ -3,7 +3,7 @@
 @import "bootstrap/scss/mixins/breakpoints";
 
 .teaser1 {
-  color: #2C89A0;
+  color: #2c89a0;
   margin: 3rem 0;
   max-width: 40rem;
   font-size: 2.3rem;
@@ -15,7 +15,7 @@
 }
 
 .teaser2 {
-  color: #2C89A0;
+  color: #2c89a0;
   font-size: 2rem;
   line-height: 2rem;
   margin: 0rem 0 4rem;
@@ -29,9 +29,10 @@
 }
 
 .teaser4 {
-  font-weight:bold;
+  font-weight: bold;
   font-size: 1.5rem;
-  &, a {
+  &,
+  a {
     color: #89a02c;
   }
 }

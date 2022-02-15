@@ -22,13 +22,16 @@ export default function Score({ score, oldScore, showMaxScore }) {
               pathColor: color,
             })}
           >
-            <span className="font-weight-bold">{`${percentage}`}{ showMaxScore && '/100'}</span>
-            { oldScore && (
-                <>
-                  <br />
-                  <Trend oldValue={oldScore} value={score} />
-                </>
-            ) }
+            <span className="font-weight-bold">
+              {`${percentage}`}
+              {showMaxScore && "/100"}
+            </span>
+            {oldScore && (
+              <>
+                <br />
+                <Trend oldValue={oldScore} value={score} />
+              </>
+            )}
           </CircularProgressbarWithChildren>
         )}
       </ProgressProvider>

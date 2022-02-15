@@ -1,26 +1,33 @@
-import { button, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Alert, Button, Row, Col } from "react-bootstrap";
 import dynamic from 'next/dynamic';
 import Link from "next/link";
 import Icon from "../icon";
 import Score from "./score.js";
-// import Map from "./Map.jsx";
 import Value from "./value.js";
 import styles from "./style.module.scss";
-import registeredAnalysis from './registered.js';
+import registeredAnalysis from 'lib/analysis/registered.ts';
+import { fetchFeaturesDownloadSize } from "lib/data.ts";
 
 
 const Map = dynamic(
-  () => import('./Map.jsx'),
+  () => import('components/feature-map'),
   { ssr: false }
 )
-
 
 const Analysis = ({areaId, areaConfig, id, className, data}) => {
   const config = registeredAnalysis[id];
   const { results, results1y } = data;
 
   const [showMap, setShowMap] = useState(false);
+
+  const [featuresDownloadSize, setFeaturesDownloadSize] = useState<number>(0);
+
+  useEffect(() => { (async () => {
+    const size = await fetchFeaturesDownloadSize(areaId, config.name);
+    setFeaturesDownloadSize(size);
+    })();
+  }, []);
 
   const hasMap = 'map' in config;
 
@@ -58,7 +65,7 @@ const Analysis = ({areaId, areaConfig, id, className, data}) => {
       {hasMap && !showMap && (
         <p>
           <Button onClick={() => setShowMap(true)} variant="info">
-            Zeige Karte
+            Zeige Karte {featuresDownloadSize > 0 ? `(> ${Math.round(featuresDownloadSize / 1024)}kb)` : ''}
           </Button>
           &nbsp; (je nach Größe der Stadt werden viele Daten geladen. Kann
           auf älteren Computern oder im Mobilfunk Probleme bereiten)

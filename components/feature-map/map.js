@@ -83,20 +83,27 @@ export default class Map {
     return content;
   }
 
+  clearFeatures() {
+    console.log('clear!', this.map, this.featureLayer);
+    if (this.featureLayer) {
+      this.map.removeLayer(this.featureLayer);
+    }
+  }
+
   view(geoJSON) {
     L.DomEvent._fakeStop = L.DomEvent.fakeStop;
 
     var highlight;
-    var clearHighlight = function () {
+    var self = this;
+
+    const clearHighlight = () => {
       if (highlight) {
-        vectorGrid.resetFeatureStyle(highlight);
+        self.featureLayer.resetFeatureStyle(highlight);
       }
       highlight = null;
     };
 
-    var self = this;
-
-    var vectorGrid = L.vectorGrid
+    this.featureLayer = L.vectorGrid
       .slicer(geoJSON, {
         rendererFactory: L.canvas.tile,
         vectorTileLayerStyles: {
@@ -135,19 +142,22 @@ export default class Map {
           weight: 3,
         };
 
-        vectorGrid.setFeatureStyle(properties.id, style);
+        self.featureLayer.setFeatureStyle(properties.id, style);
       })
       .on("mouseout", function (e) {
         clearHighlight();
-      })
-      .addTo(this.map);
+      });
+
+    this.featureLayer.addTo(this.map);
 
     /* this.map.on('click', clearHighlight); */
 
-    var bbox = getBoundingBox(geoJSON.features);
-    this.map.fitBounds([
-      [bbox.yMin, bbox.xMin],
-      [bbox.yMax, bbox.xMax],
-    ]);
+    if ( geoJSON.features.length > 0 ) {
+      const bbox = getBoundingBox(geoJSON.features);
+      this.map.fitBounds([
+        [bbox.yMin, bbox.xMin],
+        [bbox.yMax, bbox.xMax],
+      ]);
+    }
   }
 }

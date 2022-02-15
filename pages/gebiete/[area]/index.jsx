@@ -7,9 +7,9 @@ import {Col,Row} from "react-bootstrap";
 import Score from "../../../components/analysis/score.js";
 import AnalysisPreview from "../../../components/analysis-preview";
 import Population from "../../../components/population";
-import registeredAnalysis from '../../../components/analysis/registered.js';
+import registeredAnalysis from 'lib/analysis/registered.ts';
 import styles from "./area.module.scss";
-import { fetchIndex, fetchArea } from "../../../lib/data.js";
+import { fetchIndex, fetchArea } from "lib/data.ts";
 
 
 // export default function Area({slug, data, store}) {

@@ -1,4 +1,37 @@
-var registeredAnalysis = {
+import { filterConfigs as bicycleInfrastructureFilterConfigs } from '../../../verkehrswindex-analysis/src/analysis/bike-infrastructure.mjs';
+import { filterConfigs as stopDistanceFilterConfigs } from '../../../verkehrswindex-analysis/src/analysis/stop-distance.mjs';
+import Filter from '../../../verkehrswindex-analysis/src/osm/filter.js';
+export { Filter };
+
+export type MapConfig = {
+    features: {
+        [key: string]: {
+            name?: string;
+            label?: string;
+            filter?: any;
+        },
+    }
+};
+
+export type AnalysisConfig = {
+    [key: string]: {
+        name: string;
+        title: string;
+        category: string;
+        description: string;
+        map?: MapConfig;
+        values: {
+            [key: string]: {
+                title: string;
+                lowerIsBetter?: boolean;
+                unit?: string;
+                description?: string;
+            },
+        };
+    };
+};
+
+const registeredAnalysis : AnalysisConfig = {
   'haltestellen-abdeckung': {
     name: 'stop_distance',
     title: "Haltestellen-Abdeckung",
@@ -10,7 +43,15 @@ Wie weit ist es bis zur nächsten ÖPNV-Haltestelle?
       features: {
         default: {
           name: 'Haltestelle',
-        }
+        },
+        stop: {
+            label: 'Haltestelle',
+            filter: stopDistanceFilterConfigs.stop,
+        },
+        building: {
+            label: 'Gebäude',
+            filter: stopDistanceFilterConfigs.building,
+        },
       },
     },
     values: {
@@ -46,7 +87,15 @@ im Verhältnis zu allen Wegen?
       features: {
         default: {
           name: 'Ignorierter Weg (Fußwege, Privatwege, ...)',
-        }
+        },
+        bicycleRoad: {
+          label: 'Radstraßen',
+          filter: bicycleInfrastructureFilterConfigs.bicycleRoad,
+        },
+        cycleWay: {
+            label: 'Radwege',
+            filter: bicycleInfrastructureFilterConfigs.cycleWay,
+        },
       },
     },
     values: {

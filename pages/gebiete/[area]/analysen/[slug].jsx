@@ -4,11 +4,11 @@ import Layout, { siteTitle } from '../../../../components/layout';
 const __ = (x,y) => x;
 
 import Analysis from "../../../../components/analysis";
-import registeredAnalysis from '../../../../components/analysis/registered.js';
+import registeredAnalysis from 'lib/analysis/registered.ts';
 
 import config from "../../../../config.json5";
 
-import { fetchIndex, fetchArea } from "../../../../lib/data.js";
+import { fetchIndex, fetchArea } from "lib/data.ts";
 
 const Contact = ({data, area, analysis}) => {
   return (

@@ -87,7 +87,6 @@ export default class Map {
   }
 
   clearFeatures() {
-    console.log("clear!", this.map, this.featureLayer);
     if (this.featureLayer) {
       this.map.removeLayer(this.featureLayer);
     }

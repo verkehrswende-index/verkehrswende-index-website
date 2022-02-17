@@ -2,7 +2,7 @@ import React from "react";
 import styles from "./style.module.scss";
 import cn from "classnames";
 
-export default function Icon({ name, title }) {
+export default function Icon({ name, title = null }) {
   var icon = null;
   if (name === "ban-car") {
     icon = (

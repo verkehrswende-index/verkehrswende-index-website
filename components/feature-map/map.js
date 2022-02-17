@@ -92,7 +92,12 @@ export default class Map {
     }
   }
 
-  view(geoJSON) {
+  /**
+   * Displays the given features on the map.
+   *
+   * @param collection The feature collection.
+   */
+  view(collection) {
     L.DomEvent._fakeStop = L.DomEvent.fakeStop;
 
     var highlight;
@@ -106,7 +111,7 @@ export default class Map {
     };
 
     this.featureLayer = L.vectorGrid
-      .slicer(geoJSON, {
+      .slicer(collection, {
         rendererFactory: L.canvas.tile,
         vectorTileLayerStyles: {
           sliced: (properties, zoom, dimension) =>
@@ -154,8 +159,8 @@ export default class Map {
 
     /* this.map.on('click', clearHighlight); */
 
-    if (geoJSON.features.length > 0) {
-      const bbox = getBoundingBox(geoJSON.features);
+    if (collection.features.length > 0) {
+      const bbox = getBoundingBox(collection.features);
       this.map.fitBounds([
         [bbox.yMin, bbox.xMin],
         [bbox.yMax, bbox.xMax],

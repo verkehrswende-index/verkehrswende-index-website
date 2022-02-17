@@ -1,5 +1,5 @@
-import config from "../config.json5";
-import registeredAnalysis from "lib/analysis/registered.ts";
+import config from "config.json5";
+import registeredAnalysis from "lib/analysis/registered";
 
 export async function fetchIndex() {
   return fetch(config.dataURI + "index.json").then((response) =>
@@ -28,6 +28,17 @@ export async function fetchArea(area: string) {
   return data;
 }
 
+export type AnalysisGeometryObject = GeoJSON.GeometryObject;
+export type AnalysisGeoJsonProperties = GeoJSON.GeoJsonProperties;
+export type AnalysisFeature = GeoJSON.Feature<
+  AnalysisGeometryObject,
+  AnalysisGeoJsonProperties
+>;
+export type AnalysisFeatureCollection = GeoJSON.FeatureCollection<
+  AnalysisGeometryObject,
+  AnalysisGeoJsonProperties
+>;
+
 export async function fetchFeaturesDownloadSize(
   area: string,
   analysis: string
@@ -45,12 +56,41 @@ export async function fetchFeaturesDownloadSize(
   return parseInt(lengthString, 10);
 }
 
+/**
+ * Fetches the features for the given area and analysis.
+ *
+ * @param area The area id.
+ * @param analysis The analysis id.
+ * @param date The date specifier.
+ * @returns Promiseof fetched Features
+ */
 export async function fetchFeatures(
   area: string,
-  analysis: string
-): Promise<GeoJSON.FeatureCollection> {
+  analysis: string,
+  date: string = ""
+): Promise<AnalysisFeatureCollection> {
+  const dateInfix = date === "" ? "" : "1y.";
   const response = await fetch(
-    config.remoteDataURI + `areas/${area}/analysis/${analysis}/features.json`
+    config.remoteDataURI +
+      `areas/${area}/analysis/${analysis}/features.${dateInfix}json`
   );
   return response.json();
+}
+
+/**
+ * Get a map from ids to features for the given feature collection.
+ *
+ * The features will not be copied, only referenced!
+ *
+ * @param collection The feature collection
+ * @returns The mapped features.
+ */
+export function getFeatureMap(
+  collection: AnalysisFeatureCollection
+): Map<AnalysisFeature["id"], AnalysisFeature> {
+  const map = new Map();
+  collection.features.forEach((feature) => {
+    map.set(feature.id, feature);
+  });
+  return map;
 }

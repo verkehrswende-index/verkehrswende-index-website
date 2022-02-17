@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Loading from "../loading";
 import MapWidget from "./map.js";
 import styles from "./style.module.scss";
-import { fetchFeatures } from "lib/data.ts";
+import { fetchFeatures, getFeatureMap, AnalysisFeature } from "lib/data";
 import { Filter, MapConfig } from "lib/analysis/registered.ts";
 import Switch from "../switch";
 
@@ -25,6 +25,7 @@ const Map = ({ area, analysis, config }: Props) => {
   const [filters, setFilters] =
     useState<{ [key: string]: boolean }>(initialFilters);
   const [showAllFeatures, setShowAllFeatures] = useState<boolean>(true);
+  const [showDiffs, setShowDiffs] = useState<boolean>(false);
   const [map, setMap] = useState<any | null>(null);
 
   useEffect(() => {
@@ -47,8 +48,27 @@ const Map = ({ area, analysis, config }: Props) => {
 
     const init = async () => {
       const features = await fetchFeatures(area, analysis);
+      if (showDiffs) {
+        // Only keep new and changed (score) features.
+        const oldFeaturesMap = getFeatureMap(
+          await fetchFeatures(area, analysis, "1y")
+        );
+        features.features = features.features.filter(
+          (f: AnalysisFeature) =>
+            !oldFeaturesMap.has(f.id) ||
+            oldFeaturesMap.get(f.id).properties.score !== f.properties.score
+        );
+        features.features = features.features.map((f: AnalysisFeature) => {
+          if (oldFeaturesMap.has(f.id)) {
+            f.properties.__old = oldFeaturesMap.get(f.id).properties;
+          }
+          return f;
+        });
+      }
+
+      // Filter features based on active filters.
       if (!showAllFeatures) {
-        features.features = features.features.filter((f: GeoJSON.Feature) =>
+        features.features = features.features.filter((f: AnalysisFeature) =>
           Object.keys(filters).some((filterKey) => {
             return (
               filters[filterKey] &&
@@ -62,14 +82,24 @@ const Map = ({ area, analysis, config }: Props) => {
     };
 
     init();
-  }, [map, filters, showAllFeatures]);
+  }, [map, filters, showDiffs]);
 
   return (
     <>
       <div className={styles.filter}>
         <Switch
+          id="showDiffs"
+          label={"Veränderungen anzeigen"}
+          checked={showDiffs}
+          onChange={() => {
+            setShowDiffs((s) => !s);
+          }}
+        />
+      </div>
+      <div className={styles.filter}>
+        <Switch
           id="allFeatures"
-          label={"Alles anzeigen"}
+          label={"Alle Elemente anzeigen"}
           checked={showAllFeatures}
           onChange={() => {
             setShowAllFeatures((s) => !s);

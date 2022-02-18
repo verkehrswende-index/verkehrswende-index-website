@@ -1,8 +1,10 @@
+import ReactDOM from "react-dom";
 import chroma from "chroma-js";
 import getBoundingBox from "../../lib/geo/get-bounding-box.js";
 import L from "leaflet";
 import "../../../../Leaflet.VectorGrid/dist/Leaflet.VectorGrid.bundled.min.js";
 import "leaflet/dist/leaflet.css";
+import Properties from "./properties";
 
 export default class Map {
   constructor(mapid, mapSettings) {
@@ -65,27 +67,6 @@ export default class Map {
     };
   }
 
-  getPopupContent(feature) {
-    var content = "";
-    if (feature.properties.name) {
-      content += "<h2>" + feature.properties.name + "</h2><br>";
-    }
-    content += "<strong>Werte:</strong><br>";
-    for (var property in feature.properties) {
-      if (property === "id") {
-        var osmLink =
-          '<a target="_blank" href="https://www.openstreetmap.org/' +
-          feature.properties[property] +
-          '">View in Open Street Map</a>';
-      } else {
-        content +=
-          "<i>" + property + ":</i> " + feature.properties[property] + "<br>";
-      }
-    }
-    content += "<br>" + osmLink;
-    return content;
-  }
-
   clearFeatures() {
     if (this.featureLayer) {
       this.map.removeLayer(this.featureLayer);
@@ -133,10 +114,15 @@ export default class Map {
         indexMaxPoints: 100000, // max number of points per tile in the index
       })
       .on("click", function (e) {
-        var properties = e.layer.properties;
+        const properties = e.layer.properties;
+        const root = document.createElement("div");
+        ReactDOM.render(<Properties properties={properties} />, root);
         L.popup()
           .setLatLng(e.latlng)
-          .setContent(self.getPopupContent({ properties: properties }))
+          .setContent(root)
+          .on("remove", () => {
+            ReactDOM.unmountComponentAtNode(root);
+          })
           .openOn(self.map);
       })
       .on("mouseover", function (e) {

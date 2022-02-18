@@ -29,14 +29,14 @@ export async function fetchArea(area: string) {
 }
 
 export type AnalysisGeometryObject = GeoJSON.GeometryObject;
-export type AnalysisGeoJsonProperties = GeoJSON.GeoJsonProperties;
+export type AnalysisProperties = GeoJSON.GeoJsonProperties;
 export type AnalysisFeature = GeoJSON.Feature<
   AnalysisGeometryObject,
-  AnalysisGeoJsonProperties
+  AnalysisProperties
 >;
 export type AnalysisFeatureCollection = GeoJSON.FeatureCollection<
   AnalysisGeometryObject,
-  AnalysisGeoJsonProperties
+  AnalysisProperties
 >;
 
 export async function fetchFeaturesDownloadSize(
